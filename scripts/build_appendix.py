@@ -37,34 +37,68 @@ def how_merged(r):
     return "；".join(parts) if parts else "—"
 
 
+CLASSES = [
+    ("1 单题直接出分", ["1.1 程序对答案", "1.2 跑起来再判", "1.3 模型判答案对不对", "1.4 按细则逐条判", "1.5 基座模型：读概率和少样本"]),
+    ("2 多模型相互比较", ["人来投票", "模型当裁判", "对局规则判胜负", "各自打分后按名次比"]),
+    ("3 其他出分方式", ["3.1 对照固定参考产出", "3.2 换算成人类的量", "3.3 没有满分的开放量", "3.4 真实使用数据", "3.5 跨 bench 合成指数", "3.6 评测判官本身"]),
+]
+CHAPTER = {"1": "chapter1.md", "2": "chapter2.md", "3": "chapter3.md"}
+
+
 def main():
     with open(CSV_PATH, encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
-    groups = OrderedDict((g, []) for g in ORDER)
+    total = len(rows)
+    by_sub = {}
     for r in rows:
-        groups.setdefault(r["领域大类"], []).append(r)
+        by_sub.setdefault(r["小类"], []).append(r)
+    known = {s for _, subs in CLASSES for s in subs}
+    unknown = set(by_sub) - known
+    if unknown:
+        raise SystemExit(f"未知小类：{unknown}")
+    dom_rank = {d: i for i, d in enumerate(ORDER)}
+
+    def anchor(i, j):
+        return f"c{i + 1}-{j + 1}"
+
     lines = [
         "# 附录 书中涉及的 bench",
         "",
-        f"这里按领域列出 {len(rows)} 个 bench。"
+        f"这里列出 {total} 个 bench，按正文的三大类和小类分组，同一小类里按领域排列。"
         "“怎么判”写谁来判、拿什么作对照；“怎么合成总分”依次写一道题内、多次采样和整套题三步，"
-        "没有特别处理的步骤略去；“属于哪一类”对应正文的章节编号。"
-        "更完整的字段（报告的数字、谁在报这个分、发布时间）在 [data/benchmarks.csv](../data/benchmarks.csv)。",
+        "没有特别处理的步骤略去。少数 bench 同时用了两种出分方式，按主要的一种归类，名称后面注明另一种。"
+        "更完整的字段在 [data/benchmarks.csv](../data/benchmarks.csv)。",
         "",
+        "| 大类 | 小类 | 数量 | 占比 |",
+        "|---|---|---|---|",
     ]
-    for g, rs in groups.items():
-        if not rs:
-            continue
-        lines += [f"## {g}", "", "| 名称 | 怎么判 | 怎么合成总分 | 属于哪一类 |", "|---|---|---|---|"]
-        for r in rs:
-            name = cell(r["名称"])
-            if r["来源"].strip():
-                name = f"[{name}]({r['来源'].strip()})"
-            lines.append(f"| {name} | {cell(how_judged(r))} | {cell(how_merged(r))} | {cell(r['属于哪一类'])} |")
-        lines.append("")
+    for i, (cls, subs) in enumerate(CLASSES):
+        n_cls = sum(len(by_sub.get(s, [])) for s in subs)
+        for j, s in enumerate(subs):
+            n = len(by_sub.get(s, []))
+            lines.append(f"| {cls if j == 0 else ''}{f'（{n_cls} 个）' if j == 0 else ''} | [{s}](#{anchor(i, j)}) | {n} | {n / total:.1%} |")
+    lines.append("")
+    for i, (cls, subs) in enumerate(CLASSES):
+        n_cls = sum(len(by_sub.get(s, [])) for s in subs)
+        num, name = cls.split(" ", 1)
+        lines += [f"## 第 {num} 类 {name}（{n_cls} 个）", "",
+                  f"正文见[第 {num} 章]({CHAPTER[num]})。", ""]
+        for j, s in enumerate(subs):
+            rs = sorted(by_sub.get(s, []), key=lambda r: (dom_rank.get(r["领域大类"], 99), r["名称"]))
+            lines += [f'<a id="{anchor(i, j)}"></a>', "", f"### {s}（{len(rs)} 个）", "",
+                      "| 名称 | 领域 | 怎么判 | 怎么合成总分 |", "|---|---|---|---|"]
+            for r in rs:
+                name_cell = cell(r["名称"])
+                if r["来源"].strip():
+                    name_cell = f"[{name_cell}]({r['来源'].strip()})"
+                parts = r["属于哪一类"].split("；")
+                if len(parts) > 1:
+                    name_cell += f"（也用到{parts[1].split(' ', 1)[1]}）"
+                lines.append(f"| {name_cell} | {cell(r['领域'])} | {cell(how_judged(r))} | {cell(how_merged(r))} |")
+            lines.append("")
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
-    print(f"{len(rows)} 个 bench → {OUT_PATH}")
+    print(f"{total} 个 bench → {OUT_PATH}")
 
 
 if __name__ == "__main__":
