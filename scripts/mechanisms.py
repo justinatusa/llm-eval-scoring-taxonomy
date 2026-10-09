@@ -15,7 +15,7 @@ def pl_prob(order, w):
         p *= w[x] / sum(w[y] for y in rest); rest.remove(x)
     return p
 print("P(A>B>C>D) =", round(pl_prob("ABCD", w), 4), "= 3/6.5 * 2/3.5 * 1/1.5")
-print("核对:", round(3/6.5*2/3.5*1/1.5, 4))
+print("直接相乘:", round(3/6.5*2/3.5*1/1.5, 4))
 print("全部 24 个排序概率之和 =", round(sum(pl_prob(o, w) for o in itertools.permutations("ABCD")), 6))
 # Y-of-X: 只报前 Y 名（top-Y）也能写似然
 print("只看第一名 P(A 第一) =", round(3/6.5, 4), "；PL 在两两时退化为 BT: P(A>B)=3/5 =", 3/5)
@@ -112,7 +112,7 @@ print("平局记半胜 BT Elo:", elo(g_half), "  Davidson Elo:", elo(g_dav), " �
 print("  A–B 有 8 场平局；两种口径名次相同，分差不同")
 
 # ---------------- §2 合成对局 ----------------
-hr("§2 AA-Briefcase 合成对局的几种读法（AA 未公开比较单位和平局规则）")
+hr("§2 AA-Briefcase 式合成对局：几种比较单位和平局规则")
 # 3 个模型，4 个任务，每任务的细则通过数 / 细则总数
 checks = [10, 10, 20, 5]
 passed = {"M1": [9, 6, 10, 5], "M2": [8, 7, 15, 3], "M3": [8, 6, 12, 4]}
@@ -148,7 +148,7 @@ for v in ["per_task_tie_half", "per_task_ties_dropped", "fractional"]:
     ms = matches(v)
     print(f"{v:24s} Elo(锚 M2=1000):", elo(bt_mle(ms, models), anchor="M2"))
 ov = matches("overall")
-print("overall(整体比一次)      对局:", ov, "→ 全胜全负，BT MLE 发散（需先验/正则），所以不可能是这种朴素读法")
+print("overall(整体比一次)      对局:", ov, "→ 有一方全胜，BT 最大似然不存在（要加先验或正则）")
 
 # ---------------- §3 支配分 ----------------
 hr("§3 支配分 = 对随机对手、随机任务的胜率 = (N − 平均名次)/(N − 1)")
@@ -170,7 +170,7 @@ fs_v1 = [("Claude Fable 5", 2.88, 88), ("GLM-5.3", 4.50, 78), ("Grok 4.6", 4.53,
          ("GLM-5.1", 12.88, 26), ("DeepSeek V4 Pro", 13.06, 25), ("Kimi K2.5", 13.26, 23), ("Kimi K2.6", 13.44, 22),
          ("Qwen3.6-Plus", 13.82, 20)]
 bad = [(n, a, d, round(100 * (17 - a) / 16, 1)) for n, a, d in fs_v1 if abs(100 * (17 - a) / 16 - d) > 0.5 + 100 * 0.005 / 16]
-print("FrontierSWE v1 17 行核对 (N=17)，不符的行:", bad if bad else "无")
+print("FrontierSWE v1 公开榜 17 行 (N=17)，与公式不符的行:", bad if bad else "无")
 print("  例: 2.88 →", round(100 * (17 - 2.88) / 16, 1), "%；13.82 →", round(100 * (17 - 13.82) / 16, 1), "%")
 
 # ---------------- §4 Codeforces ----------------
@@ -220,7 +220,7 @@ print("（官方真实更新还会取 seed 与实际名次的几何平均、再 
 print("CodeElo 表 6 摘录：1073≈50 百分位，1603≈90，2157≈99（同一 rating 在不同年份人口里百分位不同）")
 
 # ---------------- §5 判官合并 ----------------
-hr("§5 判官合并：同一份判定矩阵，六种合法")
+hr("§5 判官合并：同一份判定矩阵，六种规则")
 # 一个任务、5 条细则、3 个判官的 0/1 判定
 J = [[1, 1, 1, 0, 1],   # 判官 1
      [1, 1, 0, 1, 1],   # 判官 2
@@ -309,7 +309,7 @@ human = [10, 12, 20, 25, 30]; ai = [10, 24, 18, 50]   # 只通了 4 关
 print("ARC-AGI-3 关分:", [round(min((h / a) ** 2, 1.15), 4) for h, a in zip(human, ai)])
 print("游戏分 = Σ 关号×关分 / 15 = %.4f ；上限 10/15 = %.4f" % (rhae_game(human, ai, 5), 10 / 15))
 ai_fast = [5, 5, 5, 5]
-print("全部关卡比人快很多时 = %.4f > 0.6667 → 1.15 上限和“最多 66.7%%”两句话在数值上冲突，官方需另有截断" % rhae_game(human, ai_fast, 5))
+print("前 4 关都比人快很多时 = %.4f" % rhae_game(human, ai_fast, 5))
 pin, pcache, pout = 3.0, 0.3, 15.0   # $/M token
 print("AA 混合价 7:2:1 (缓存命中:输入:输出) = (7×%.1f+2×%.1f+1×%.1f)/10 = $%.2f/M" % (pcache, pin, pout, (7 * pcache + 2 * pin + pout) / 10))
 pts = {"A": (0.5, 40), "B": (1.2, 55), "C": (2.0, 52), "D": (4.0, 70), "E": (9.0, 71), "F": (12.0, 69)}
@@ -320,7 +320,7 @@ for k, (c, s) in pts.items():
     print(f"  {k}: 分={s} 成本=${c}  分/美元={s / c:6.1f}  分−10·log10(成本)={s - 10 * math.log10(c):5.1f}")
 
 # ---------------- §9 BPB ----------------
-hr("§9 O1：NLL → bits-per-byte")
+hr("§9 预训练：NLL → bits-per-byte")
 text = "The quick brown fox jumps over the lazy dog."
 nbytes = len(text.encode("utf-8")); ntok = 10; nll_nats_per_tok = 2.3
 bpb = ntok * nll_nats_per_tok / (math.log(2) * nbytes)

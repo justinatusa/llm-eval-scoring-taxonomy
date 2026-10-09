@@ -1,0 +1,228 @@
+﻿名称,领域大类,领域,属于哪一类,谁来判,跟什么比,一道题内怎么合,多次采样怎么合,整套题怎么合成总分,是否跨模型拟合,报告的数字,谁在报这个分,发布时间,来源
+Humanity's Last Exam（HLE，含 SEAL HLE-Diamond 子集）,推理/知识/事实性,推理/知识,1 单题直接出分,"LLM 判""是否和标准答案等价""（原论文 o3-mini；AA 用 GPT-5.6 Luna）",标准短答案,单信号 1/0,通常单次；SEAL 报 95% CI,准确率（题均）；另报校准误差,否,准确率 %，如 DeepSeek-V4-Pro Max 37.7,AA 智能指数、GPT-6 Astra、Claude Opus 5.5、DeepSeek-V4、Kimi K3、GLM-5.3、Gemini 3.5 Flash、Scale SEAL、Step 3.7 Flash,2025-01,https://arxiv.org/abs/2501.14249
+HLE-Verified,推理/知识/事实性,推理/知识,1 单题直接出分,同 HLE,修订后的标准答案,单信号 1/0,单次,准确率,否,准确率 %,Gemini 3.8 Flash,2026,https://deepmind.google/models/model-cards/gemini-3-8-flash/
+AA-Omniscience,推理/知识/事实性,知识+幻觉,1 单题直接出分,LLM 四档：对/部分/错/不答,标准答案,对 +1、错 −1、不答 0（净分）,单次,Omniscience Index（净分）；另报准确率和幻觉率,否,净分（可为负）、准确率、1−幻觉率,AA 智能指数、Claude Opus 5 系统卡,2025-11,https://arxiv.org/abs/2511.13029
+SimpleQA Verified,推理/知识/事实性,事实性/幻觉,1 单题直接出分,LLM 三档：对/错/未作答；DeepSeek 基座版 25-shot 精确匹配,标准短答案,单信号,单次,correct、CGA（作答中正确率）、F 分数,否,F 分数或准确率 %,DeepSeek-V4（基座和对话都报）,2025-09,https://arxiv.org/abs/2509.07968
+FACTS 套件 / FACTS Parametric,推理/知识/事实性,事实性/幻觉,1 单题直接出分,4 个子榜各用 LLM 判；DeepSeek 基座版 25-shot EM,参考文档或标准答案,单信号,单次,子榜准确率→4 子榜等权平均,否,套件均分 %,DeepSeek-V4（基座表也报）,2025-12,https://arxiv.org/abs/2512.10791
+MMLU-Pro,推理/知识/事实性,知识,1 单题直接出分,规则：10 选 1 精确匹配,标准选项,单信号,单次,准确率,否,准确率 %,DeepSeek-V4（基座和对话）,2024-06,https://arxiv.org/abs/2406.01574
+ARC-AGI-1 / 2,推理/知识/事实性,抽象推理,1 单题直接出分,规则：输出网格完全一致,标准网格,单信号,2 次提交（pass@2）,准确率；并列报每任务成本,否,准确率 % + $/任务,GPT-6 Astra、Gemini 3.5 Flash、Claude Opus 5,2019 / 2025-03,https://arcprize.org/
+ARC-AGI-3,推理/知识/事实性,交互式推理,3.2 换算成人类的量,规则：环境判通关,人类基准步数,每关 (人类步数/AI 步数)²，封顶 1.15,单次,按关号加权，乘已通关比例,否,0–100% 分,GPT-6 Astra、Claude Opus 5,2026,https://docs.arcprize.org/methodology
+EnigmaEval,推理/知识/事实性,解谜推理,1 单题直接出分,规则：字符串匹配,标准答案,单信号,单次,pass@1 + 95% CI,否,%,Scale SEAL,2025-02,https://scale.com/leaderboard/enigma_eval
+LiveBench,推理/知识/事实性,综合（防污染）,1 单题直接出分,规则：客观答案，不用 LLM 判官,标准答案,单信号,单次,按类别平均再总平均,否,%,LiveBench,2024-06 滚动（最新 2026-06-25）,https://livebench.ai/
+KINA,推理/知识/事实性,知识（261 学科）,1 单题直接出分,规则：A–J 选择题,标准选项,单信号,单次,Pass@1,否,%,Seed 2.1,2026-06,https://github.com/2077AI/KINA
+SuperGPQA,推理/知识/事实性,知识（285 学科）,1 单题直接出分,规则：选择题,标准选项,单信号,单次,准确率,否,%,Seed 2.1、DeepSeek-V4 基座表,2025-02,https://arxiv.org/abs/2502.14739
+HELM Capabilities,推理/知识/事实性,综合,3.5 跨 bench 合成指数,继承各子集评分,继承,—,—,顶层从平均胜率改为平均分,否,均分,Stanford CRFM,2025-04,https://crfm.stanford.edu/helm/capabilities/latest/
+FrontierMath（Tier 1–4）,数学,数学,1 单题直接出分,规则：脚本核对可计算答案,标准答案,单信号,单次（Epoch 报 CI）,准确率,否,准确率 %,GPT-6 Astra、Epoch,2024-11,https://epoch.ai/frontiermath
+FrontierMath: Open Problems / Erdős,数学,数学（未解问题）,1 单题直接出分,规则：Lean 形式化证明编译通过,定理陈述（无已知答案）,单信号,单次,解出题数,否,解出题数,Epoch,2026,https://epoch.ai/frontiermath
+HMMT 2026 Feb（MathArena）,数学,竞赛数学,1 单题直接出分,规则：最终答案比对,标准答案,单信号,每题 4 次平均,准确率,MathArena 总表缺格用 IRT 补,准确率 %,DeepSeek-V4、MathArena,2026-02,https://matharena.ai/
+IMO-AnswerBench,数学,竞赛数学,1 单题直接出分,LLM：AnswerAutoGrader（Gemini 2.5 Pro）抽出最终答案并判等价,标准短答案,单信号,单次,准确率,否,准确率 %,DeepSeek-V4,2025-11,https://arxiv.org/abs/2511.01846
+MathArena Apex / Apex Shortlist,数学,竞赛数学,1 单题直接出分,规则：最终答案比对,标准答案,单信号,4 次平均,准确率,否,准确率 %,DeepSeek-V4、MathArena,2025-08,https://matharena.ai/
+IMO-ProofBench / IMO 2026 证明,数学,证明,1 单题直接出分,LLM 按评分指南给 0–7；Anthropic IMO 2026：模型写细则、3 个判官须一致、人工抽查,评分指南 / 官方细则,每题 0–7 分,单次,总分（如 42/42）或均分,否,总分 / 百分比,Claude Opus 5 系统卡、DeepSeek-V4、MathArena,2025-11,https://arxiv.org/abs/2511.01846
+RiemannBench（Riemann-Bench）,数学,研究级数学,1 单题直接出分,规则：程序化等价检查（闭式答案）,标准闭式答案,单信号,每题 100 次，无偏 pass@k 估计,pass@1（无偏估计）题均,否,pass@1 %,Gemini 4 Argon、Claude Opus 5,2026-04,https://arxiv.org/abs/2604.06802
+ArxivMath（MathArena）,数学,研究数学（每月新题）,1 单题直接出分,规则：答案比对,标准答案,单信号,4 次平均,准确率,否,%,Claude Opus 5 系统卡、MathArena,2026,https://matharena.ai/
+BeyondAIME,数学,竞赛数学,1 单题直接出分,规则：正整数答案精确匹配,标准答案,单信号,多次平均（Seed 1.5 用 32 次）,准确率,否,%,Seed 2.1,2025-04,https://huggingface.co/datasets/ByteDance-Seed/BeyondAIME
+ProofBench（Vals）,数学,形式化证明,1 单题直接出分,规则：Lean 4 验证,定理陈述,只能提交一次,单次,通过率,否,%,Vals,2026,https://www.vals.ai/benchmarks/proof_bench
+PutnamBench,数学,形式化数学,1 单题直接出分,证明检查器：Lean 4 / Isabelle / Rocq,形式化命题（有答案变体要模型自己填答案）,编译通过即解出,提交方自定（DeepSeek-V4 报 Pass@8）,解出题数；全部解出后按每题平均成本排,否,解出数 / 672,DeepSeek-V4（Putnam-200）、PutnamBench 公开榜,2024-07,https://trishullab.github.io/PutnamBench/leaderboard.html
+GPQA Diamond,科学,科学问答,1 单题直接出分,规则：正则抽选项字母,4 选 1 标准答案,单信号 1/0,多次平均（Epoch 16 次并报标准误）,准确率,否,准确率 %，如 GPT-6 Astra 96.0,GPT-6 Astra、DeepSeek-V4、Kimi K3,2023-11,https://arxiv.org/abs/2311.12022
+CritPt,科学,物理研究级推理,1 单题直接出分,规则：官方评分服务器（数值/SymPy/函数测试）,标准答案（数值、符号式或函数）,单信号,多次平均（AA 5 次）,准确率,否,准确率 %,AA 智能指数、Kimi K3,2025-09,https://arxiv.org/abs/2509.26574
+PostTrainBench v1.1,科学,ML 工程（后训练）,3.3 没有满分的开放量,嵌套：训好的模型再跑 7 个 bench；3 个判官判污染,基座模型分,污染则退回基座分,多次平均,7 bench 加权,否,加权分,Gemini 4 Argon、Kimi K3、GLM-5.3,2026,https://posttrainbench.com/
+MLS-Bench-Lite,科学,ML 研究,3.2 换算成人类的量,规则：任务指标,最弱复现基线=0、最强人类 SOTA 参考、理论上界=100,每题按基线归一化,单次（Qwen 5 小时预算）,归一化分算术平均,否,0–100 分,Kimi K3、Qwen3.8,2026-05,https://mls-bench.com/
+EEBench（xAI）,科学,电子工程,1 单题直接出分,规则：构建 + 仿真 + 程序化电气检查,设计规格,电气检查通过 + BOM 成本效率,单次,题均,否,%,Grok 4.7,2026,https://eebench.org/methodology.html
+DrugDiscoveryBench,科学,药物发现代理,1 单题直接出分,LLM 按专家加权细则打 0–100,专家细则,只有 100 分才算解决；未完成记 0,3 次平均,解决率,否,%,Scale SEAL,2026,https://scale.com/leaderboard/drugdiscoverybench
+SciPredict,科学,科学预测,1 单题直接出分,选择题精确匹配；开放题 LLM 按细则判；数值看区间,标准答案 / 区间,单信号；另收 1–5 置信度,单次,准确率 + 校准,否,%,Scale SEAL,2026,https://scale.com/leaderboard/scipredict
+LABBench2,科学,生物实验推理,1 单题直接出分,SeqQA2/CloningQA 用程序验证器，其余 LLM 判,标准答案,单信号,单次,按标签准确率,否,%,Google DeepMind、Claude Opus 5,2026,https://github.com/EdisonScientific/labbench2
+BioMysteryBench,科学,生物推理,1 单题直接出分,LLM 读最终答案二元判；拒答记 0,标准答案,单信号,3 次平均 ± SE,准确率,否,%,Google DeepMind、Claude Opus 5、Vals,2026,https://www.vals.ai/benchmarks/biomysterybench
+GeneBench-Pro,科学,计算生物代理,1 单题直接出分,规则：对已知的模拟真值做程序判定,合成数据生成过程中的真值,单信号（数值在容许范围）,单次（另报 Pro 模式）,通过率,否,pass rate %（GPT-5.6 Sol 28.7）,GPT-6 Astra,2026-06,https://openai.com/index/introducing-genebench-pro/
+LifeSciBench,科学,生命科学专业任务,1 单题直接出分,"LLM 按专家细则（约 25 条/题，共 19,020 条）",专家细则,得分÷满分；≥70% 算通过,单次,通过率 + 归一化分题均,否,%,GPT-6 Astra,2026-08,https://openai.com/index/introducing-life-sci-bench/
+FrontierScience,科学,科学推理,1 单题直接出分,Olympiad：等价判定；Research：GPT-5 按 10 分细则,标准答案 / 细则,Research ≥7 分算成功,单次,准确率,否,%,OpenAI,2026-01,https://openai.com/index/frontierscience/
+MysteryMechanism（Vals）,科学,科学发现（主动实验）,1 单题直接出分,规则：在私有探针上执行提交的表达式,隐藏机制,归一化误差低于阈值得 1,单次,准确率,否,%,Vals,2026,https://www.vals.ai/benchmarks/mysterymechanism
+Vals RSI Index,科学,AI 研发自动化,3.2 换算成人类的量,规则：任务指标,起点基线=0、人类/已发表参考=0.5、理论最优=1,对数尺度归一化,单次,4 题平均,否,指数 0–1,Vals,2026,https://www.vals.ai/benchmarks/rsi_index
+SciCode,代码/软件工程,科研编程,1 单题直接出分,规则：科学家写的单元测试,单元测试,子问题内测试全过才算过,多次平均（AA 3 次）,子问题级 pass@1,否,子问题准确率 %,AA 智能指数、Kimi K3,2024-07,https://scicode-bench.github.io/
+SWE-bench Verified,代码/软件工程,代码修复,1 单题直接出分,规则：跑测试,FAIL_TO_PASS 与 PASS_TO_PASS 测试,全过才算解决,单次,解决率,否,% resolved,DeepSeek-V4、Claude Opus 5,2024-08,https://www.swebench.com/
+SWE-bench Pro（含 SEAL Public v2）,代码/软件工程,代码修复,1 单题直接出分,规则：跑测试；Public v2 锁定协议，参考补丁必须过、空补丁必须不过，在干净镜像重判,隐藏测试,全过才算解决,单次,解决率（公开/保留/商业子集分开）,否,% resolved,DeepSeek-V4、Gemini 3.5 Flash、Scale SEAL、Qwen3.8、Step 3.7 Flash、MiniMax-M3,2025-09,https://scale.com/leaderboard/swe_bench_pro_public_v2
+SWE-bench Multilingual / Multimodal,代码/软件工程,代码修复,1 单题直接出分,规则：跑测试,隐藏测试,全过,单次,解决率,否,% resolved,DeepSeek-V4、Claude Opus 5、Claude Opus 5 系统卡（Multimodal）,2025,https://www.swebench.com/
+Terminal-Bench 2.0 / 2.1 / 3.0 / 4.0,代码/软件工程,终端代理,1 单题直接出分,规则：容器内隐藏测试,隐藏测试,全过；超时算失败,AA 3 次平均；Qwen 2.1 avg@10,通过率,否,通过率 %,AA 智能指数（4.0）、Qwen3.8、Seed 2.1、Step 3.7 Flash、混元 Hy3 等几乎所有厂商,2025-05 起,https://www.tbench.ai/
+Terminal-Bench-Science 0.1,代码/软件工程,科研终端任务,1 单题直接出分,规则：验证器容器,隐藏测试,全过,多次平均,通过率,否,通过率 %,GPT-6 Astra、Claude Opus 5.5、Gemini 4 Argon,2026,https://www.tbench.ai/
+DeepSWE v1.1,代码/软件工程,代码代理,1 单题直接出分,规则：人写行为验证器,行为验证器,全过,单次（Qwen 取两套 harness 较高者）,pass@1；并列报成本,否,% + 成本,GPT-6 Astra、Google DeepMind、xAI、Kimi、GLM、Meta、Qwen3.8,2026,https://deepswe.datacurve.ai/
+FrontierSWE v1 / v2,代码/软件工程,长程工程优化,2 多模型相互比较；3.3 没有满分的开放量,规则：每题 0–1 连续分；作弊记 0,v1：同场其他模型（名次）；v2：绝对分,连续分,v2 mean@5，另显 worst@5–best@5,v1 支配分 = (N − 平均名次)/(N − 1)；v2 34 题 mean@5,否,mean@5 / 支配分,Gemini 4 Argon、Kimi K3、GLM-5.3、Qwen3.8,2026,https://www.frontierswe.com/
+FrontierCode v1.1,代码/软件工程,代码（可合并性）,1 单题直接出分,LLM 按专家细则判；先查 blocker,专家写的细则（含 blocker 项）,任一 blocker 不过→0，否则细则加权分,每档推理强度 5 次，报最好那档,题均（Main / Extended 两集）,否,0–100 分,GPT-6 Astra、Claude Opus 5.5,2026-07,https://cognition.com/blog/frontier-code
+ProgramBench,代码/软件工程,从零写程序,1 单题直接出分,规则：隐藏行为测试,隐藏测试,100% 通过=完全解决；≥95%=几乎解决,单次,两个阈值两个头条,否,完全解决率 % / 几乎解决率 %,Kimi K3、GLM-5.3、Vals、Seed 2.1,2026,https://www.vals.ai/benchmarks/programbench
+SWE-Marathon,代码/软件工程,超长程代码,1 单题直接出分,规则：正确性 + 性能门槛 + 反作弊,测试与性能阈值,三关全过,单次,解决率,否,%,Kimi K3、GLM-5.3,2026,https://www.swe-marathon.org/
+NL2Repo-Bench,代码/软件工程,从描述生成整库,1 单题直接出分,规则测试 + LLM 反作弊判官（可一票否决）,仓库测试,测试通过比例，判作弊则 0,单次,题均,否,%,GLM-5.3、Seed 2.1、Qwen3.8,2025-12,https://arxiv.org/abs/2512.12730
+LiveCodeBench,代码/软件工程,竞赛编程,1 单题直接出分,规则：隐藏测试,测试用例,全过,单次,pass@1，按发布时间切片,否,pass@1 %,DeepSeek-V4,2024-03 滚动,https://livecodebench.github.io/
+Codeforces rating,代码/软件工程,竞赛编程,3.2 换算成人类的量,规则：评测机,人类同场选手,每题从 32 个候选选 10 个排提交顺序,选择器,按人类同场表现折算名次→rating,否（对人类排名）,rating,DeepSeek-V4,—,https://codeforces.com/
+Vibe Code Bench v1.1,代码/软件工程,从零做 Web 应用,1 单题直接出分,规则：浏览器代理跑工作流测试,工作流测试,工作流内每步都过,单次,通过率,否,%,Gemini 4 Argon、Vals,2025-11,https://www.vals.ai/benchmarks/vibe-code
+SWE Atlas（Codebase QnA / Test Writing / Refactoring）,代码/软件工程,代码理解/测试/重构,1 单题直接出分,QnA：LLM（Opus 4.5）逐条二元判；TW：LLM 查清单 + 变异测试 + 必选细则；Refactoring：金标测试 + 必选细则,专家细则 / 金标测试,QnA 全部细则过才算；TW、Refactoring 测试和必选细则都过,TW 3 次平均,通过率,否,%,Scale SEAL、Meta、Seed 2.1,2026,https://scale.com/leaderboard/sweatlas-qna
+HiL-Bench,代码/软件工程,会问人的代理（SWE+SQL）,1 单题直接出分,ask_human 工具背后是 Llama-3.3-70B 语义判官；任务结果规则判,隐藏的阻塞信息,ASK-F1 = 提问精确率与阻塞召回率的调和平均,Pass@3（3 次至少 1 次过）,题均,否,Pass@3 % + ASK-F1,Scale SEAL,2026,https://scale.com/leaderboard/hil
+IOI（Vals）,代码/软件工程,竞赛编程,1 单题直接出分,规则：官方测试按子任务计分，运行中无反馈,官方测试数据,子任务分相加,单次,总分,否,分数,Vals,2026,https://www.vals.ai/benchmarks/ioi
+FrontierBench v0.1,代码/软件工程,终端代理,1 单题直接出分,规则：容器测试奖励,隐藏测试,奖励值,5 次平均,平均奖励,否,%,Claude Opus 5 系统卡,2026,https://www-cdn.anthropic.com/b514064af1408018e64b1ad24e7d5e75850b4ffd/claude%20opus%205%20system%20card.pdf
+Code Migration（Vals）,代码/软件工程,代码迁移,1 单题直接出分,规则：隐藏行为测试；反作弊,行为测试,通过测试比例；作弊→0,单次,题均,否,%,Vals,2026,https://www.vals.ai/benchmarks/code-migration
+VCB 1-100（Vibe Code Bench 续写）,代码/软件工程,迭代式 Web 开发,1 单题直接出分,规则：浏览器代理跑新功能 + 回归工作流,工作流测试,每步全过才算工作流过,单次,连续完成的迭代数（首次失败即停）,否,迭代数,Vals,2026,https://www.vals.ai/benchmarks/vcb-1-100
+SRE Bench（Vals）,代码/软件工程,运维代理,1 单题直接出分,规则：6 个程序判定的任务,任务检查,实例内 6 个全过才得分,单次,实例通过率,否,%,Vals,2026,https://www.vals.ai/benchmarks/srebench
+MirrorCode（Epoch）,代码/软件工程,复刻程序,1 单题直接出分,规则：测试 + stdout/stderr 完全一致,参考程序输出,100% 测试通过才算,30 题 × 3 次,通过率,否,%,Epoch,2026-06,https://epoch.ai/benchmarks/mirrorcode
+LiveCodeBench Pro,代码/软件工程,竞赛编程,3.2 换算成人类的量,规则：评测机,题目难度（人类选手）,单信号,单次,对题目难度做 Bayesian MAP Elo,是（Elo，对题目难度拟合）,Elo,LiveCodeBench Pro 公开榜,2025-06,https://arxiv.org/abs/2506.11928
+AndroidBench 2.0,代码/软件工程,Android 开发代理,1 单题直接出分,规则：任务测试,任务测试,通过 / 完成率,5 次平均（Qwen 报 avg@3）,通过率,否,%,Qwen3.8、Google,2026,https://developer.android.com/bench
+QwenReactBench / QwenSVGBench,代码/软件工程,前端/SVG 生成,2 多模型相互比较,自动渲染 + 多模态判官两两比较,其他模型,单场胜负,单次,BT/Elo,是（BT/Elo）,Elo（如 1724）,Qwen3.8,2026-08,https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B-FP8
+ITBench-AA,代码/软件工程,IT 运维诊断,1 单题直接出分,LLM 规范化实体后匹配,标注根因实体,无漏报才给 TP/(TP+FP)，否则 0,3 次,题均（全召回下的平均精确率）,否,%,AA 附加评测,2026,https://artificialanalysis.ai/evaluations/itbench-aa
+τ²-bench / τ³-bench（含 Banking）,代理/工具调用,工具+用户模拟,1 单题直接出分,规则：比数据库终态 + 必须告知项（LLM 模拟用户在环）,目标数据库状态,各奖励项相乘（二值时=全过）,原版 pass^k；AA 的 τ³-Banking 97 题跑 5 次，报 pass@1,成功率,否,pass^1 / pass^k %,AA 附加评测、Kimi K3,2025-06,https://github.com/sierra-research/tau2-bench
+MCP Atlas,代理/工具调用,工具调用,1 单题直接出分,LLM 逐条判要点 1/0.5/0,参考要点清单,覆盖率 ≥0.75 算通过,单次,通过率；另报平均覆盖率,否,%,DeepSeek-V4、Kimi、Gemini 3.5 Flash、Scale SEAL、Claude Opus 5,2025,https://scale.com/leaderboard/mcp_atlas
+Toolathlon（-Verified）,代理/工具调用,多应用工具代理,1 单题直接出分,规则：脚本查真实应用终态,目标终态,单信号,3 次平均,pass@1,否,%,DeepSeek-V4、Kimi、GLM、Gemini 3.5 Flash、Claude Opus 5、Qwen3.8、Step 3.7 Flash,2025-10,https://toolathlon.xyz/
+MCPMark（-Verified）,代理/工具调用,MCP 工具,1 单题直接出分,规则：每题 verify.py 查环境终态,目标终态,单信号,4 次：pass@1（平均）、pass@4、pass^4,题均,否,pass@1 %,Kimi K3,2025-09,https://github.com/eval-sys/mcpmark
+EnterpriseOps-Gym,代理/工具调用,企业运维代理,1 单题直接出分,规则：SQL 验证器,目标数据库状态,全过（严格）,多次平均,严格 pass@1；另报验证器通过率,否,%,AA 附加评测,2026-03,https://arxiv.org/abs/2603.13594
+Remote Labor Index（RLI）,代理/工具调用,真实外包项目,3.1 对照固定参考产出；2 多模型相互比较,人：3 人多数，3 分制评 2 或 3 算达标,人类金标交付物,单信号,单次,自动化率；另做 AI 间两两 Elo（人类=1000）,部分（Elo）,自动化率 % / Elo / 美元,Scale SEAL,2025-10,https://scale.com/leaderboard/rli
+BFCL v4,代理/工具调用,函数调用,1 单题直接出分,规则：AST / 执行 / 状态检查,标准调用,单信号,单次,分类准确率加权：代理 40%、多轮 30%、其余 3 项各 10%,否,总分 %,BFCL 榜,2025,https://gorilla.cs.berkeley.edu/leaderboard.html
+AutomationBench,代理/经营/博弈,业务自动化,1 单题直接出分,规则：查终态；碰护栏整题 0,目标终态 + 护栏,碰护栏→0，否则目标完成比例,单次,题均,否,%,AA 智能指数、OpenAI、Anthropic、Google DeepMind、Kimi、GLM、Meta、Qwen3.8,2026,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+APEX-Agents,代理/经营/博弈,专业服务代理,1 单题直接出分,LLM 逐条细则判（AA 用 Gemini 3 Flash (low)）,专家细则,全部细则过才算,3 次平均,通过率,否,%,AA 附加评测、Kimi K3、MiniMax-M3,2026-01,https://www.mercor.com/apex/apex-agents-leaderboard/
+Agents' Last Exam（ALE）,代理/经营/博弈,通用代理,1 单题直接出分,程序检查优先，必要时 LLM,任务检查项,头条二元全过；另报 0–1 连续分,单次,题均,否,Pass % / Score,GPT-6 Astra、Gemini 4 Argon、Kimi、GLM、Qwen3.8,2026,https://agents-last-exam.org/leaderboard
+JobBench,代理/经营/博弈,办公代理,1 单题直接出分,LLM 逐条二元细则,专家细则（链式）,一条细则的所有标准都过才给分,单次,题均,否,%,Kimi K3、Meta、Claude Opus 5、Qwen3.8,2026-05,https://arxiv.org/abs/2605.26329
+OfficeQA Pro,代理/经营/博弈,办公文档问答,1 单题直接出分,规则：数值比对（reward.py）,标准数值答案,1/0，默认容差 0%,单次,准确率,否,%,Kimi K3、Meta、Claude Opus 5,2026-03,https://github.com/databricks/officeqa
+SpreadsheetBench 2,代理/经营/博弈,表格代理,1 单题直接出分,规则：逐格比对；图表由 VLM（GLM-4.6V）按清单查,标准工作簿,所有单元格都对才算对,单次,准确率；另报单元格级修改指标,否,%,Kimi K3、Meta、Claude Opus 5,2026-06,https://arxiv.org/abs/2606.29955
+SaaS-Bench,代理/经营/博弈,SaaS 操作代理,1 单题直接出分,规则：加权检查点,目标状态检查点,加权检查点分；resolved=全过,单次,题均,否,checkpoint 分 / resolved %,Kimi K3、Meta、Claude Opus 5,2026-05,https://arxiv.org/abs/2605.15777
+AA-Briefcase v1.1,代理/经营/博弈,长时办公,2 多模型相互比较,LLM：细则二元 + 两两比较,细则 + 其他模型,细则通过率转合成对局,单次,按 scope 拟合 Crowd-BT,是（BT，锚 GPT-5.5=1000）,Elo,AA 智能指数、xAI、Kimi,2026,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+AA-AnalystAgent,代理/经营/博弈,数据分析代理,1 单题直接出分,LLM 判 + 规则数值预检（只能把错翻成对）,标准答案,单信号,头条 pass^5；另报 pass@1、pass@5,题均,否,%,AA 附加评测,2026,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+E-Commerce Bench（Qwen）,代理/经营/博弈,经营模拟,3.3 没有满分的开放量,规则：模拟器结算,无（越高越好）,年终账户余额,单次,余额,否,金额,Qwen3.8,2026,https://www.alibabacloud.com/blog/603421
+METR Time Horizon（1.0 / 1.1）,代理/经营/博弈,代理自主性,3.2 换算成人类的量,规则：任务成功,人类完成时长,单信号,多次平均,成功率对 log(人类耗时) 做 logistic，读 50% 点,是（单模型 logistic，非跨模型）,时长（分钟/小时）+ CI,METR,2025-03,https://metr.org/time-horizons/
+RecreationBench,代理/经营/博弈,游戏/应用复刻,1 单题直接出分,规则化行为检查 + VLM 视觉检查,参考应用,检查项比例,单次,先按平台平均再跨平台平均,否,%,Qwen3.8,2026-09,https://huggingface.co/datasets/Qwen/RecreationBench
+Time Horizon Index: KSP,代理/经营/博弈,长程代理（Kerbal 太空计划）,1 单题直接出分,规则：任务验证,任务阶梯,按阶梯进度给部分分,单次,题均,否,分数,Vals,2026,https://www.vals.ai/benchmarks/time_horizon_index
+SkillsBench v1.1,代理/经营/博弈,代理技能,1 单题直接出分,规则：任务验证,任务检查,单信号,3 次平均,题均,否,%,Vals、Qwen3.8,2026,https://www.vals.ai/benchmarks/skillsbench
+Claw-Eval（1.1）,代理/经营/博弈,通用代理,1 单题直接出分,规则检查 + 判官,任务检查点,安全 ×（0.8·完成 + 0.2·鲁棒），≥0.75 算过,3 次：Pass@3、Pass^3,题均,否,Pass^3 %,MiniMax-M3、Step 3.7 Flash,2026-04,https://github.com/claw-eval/claw-eval
+YC-Bench,代理/经营/博弈,长程经营,3.3 没有满分的开放量,规则：模拟器结算,无,期末资金；破产=0,种子 1–3 平均,美元,否,$,MiniMax-M3,2026-04,https://github.com/collinear-ai/yc-bench
+Vending-Bench 2,代理/经营/博弈,长程经营,3.3 没有满分的开放量,规则：模拟器,无,一年后银行余额,多次平均 ± 波动,美元,否,$,Anthropic、Google DeepMind,2025-11,https://andonlabs.com/evals/vending-bench-2
+Kaggle Game Arena（国际象棋/扑克/狼人杀/统一榜）,代理/经营/博弈,博弈,2 多模型相互比较,规则：对局结算,同池其他模型,胜/平/负；扑克 BB/100；狼人杀角色贡献,自适应排期,各游戏等权，统一 BT,是（BT）,Elo,Kaggle、Google DeepMind,2025-08,https://www.kaggle.com/benchmarks/kaggle/game-arena
+Poker Agent（Vals）,代理/经营/博弈,博弈,2 多模型相互比较,规则：牌局结算,同桌其他模型,筹码,多场 10 人锦标赛,TrueSkill，1000 基线归一（×40）,是（TrueSkill）,分数,Vals,2026,https://www.vals.ai/benchmarks/poker_agent
+$OneMillion-Bench,代理/经营/博弈,专家级任务,1 单题直接出分,LLM（Qwen 用 gemini-3.1-pro）按加权细则（含负分）,专家细则,加权得分÷正分总和，裁到 ≥0；≥0.7 算过,单次,Expert Score 均值 / Pass Rate,否,%,Qwen3.8、Seed 2.1,2026-03,https://arxiv.org/abs/2603.07980
+OSWorld-Verified / 2.0 / 2.1,电脑/GUI 操作,电脑操作,1 单题直接出分,规则检查点为主，约 11.5% 由模型判,任务检查点,partial=检查点比例；binary=全达成,Google DeepMind 3 次取最大；其他单次,题均,否,成功率 %,OpenAI、Anthropic、Google DeepMind、Kimi、Meta、Qwen3.8,2025-07,https://osworld-v2.xlang.ai/
+ScreenSpot-Pro,电脑/GUI 操作,GUI 定位,1 单题直接出分,规则：点击坐标是否落在目标框,标注框,单信号,单次,准确率,否,%,GPT-6 Astra,2025-04,https://arxiv.org/abs/2504.07981
+CUA-bench（Vals）,电脑/GUI 操作,电脑操作（游戏）,1 单题直接出分,规则：游戏状态 / 2 Hz 视频证据,里程碑阶梯（每游戏 100 分）,里程碑得分,3 次,6 个游戏平均,否,分数,Vals,2026,https://www.vals.ai/benchmarks/cua_bench
+MobileWorld,电脑/GUI 操作,手机 GUI 代理,1 单题直接出分,规则：任务完成检查,目标状态,单信号,单次,成功率,否,%,Qwen3.8,2025-12,https://arxiv.org/abs/2512.19432
+BrowseComp（含 Multi-Agent 变体）,深度研究/检索,深度检索,1 单题直接出分,LLM 判短答案对错,标准短答案,单信号,单次；论文另报 64 次投票,准确率,否,%,OpenAI、DeepSeek、Kimi、Claude Opus 5、混元 Hy3、Step 3.7 Flash,2025-04,https://arxiv.org/abs/2504.12516
+DeepSearchQA,深度研究/检索,深度检索（列全）,1 单题直接出分,LLM 判每个元素是否与标准集合中的某项语义等价，再算集合 F1,答案集合,集合精确率/召回率→F1,单次,F1 题均,否,F1,Kimi、Meta、Claude Opus 5,2026-01,https://arxiv.org/abs/2601.20975
+ResearchRubrics,深度研究/检索,深度研究报告,1 单题直接出分,LLM 三档 1/0.5/0 逐条判,专家细则（含负向条目）,加权和 ÷ 正向满分,单次,题均,否,%,Kimi K3,2025-11,https://arxiv.org/abs/2511.07685
+WANDR,深度研究/检索,深度研究（宽+深）,1 单题直接出分,LLM 带证据逐条核验记录,要求的记录清单,soft：部分记录给部分分；hard：记录的所有条件都过,单次,每题 P/R/F1 → 题均,否,soft F1（主）/ hard F1,Claude Opus 5.5、Perplexity,2026-08,https://arxiv.org/abs/2608.14747
+DRACO,深度研究/检索,深度研究,1 单题直接出分,LLM 逐条二元 MET/UNMET,细则,归一化得分,判分跑 5 次取平均,题均,否,%,Claude Opus 5 系统卡,2026-02,https://arxiv.org/abs/2602.11685
+DeepResearch Bench（RACE / FACT）,深度研究/检索,深度研究报告,3.1 对照固定参考产出,RACE：LLM 对照参考报告打分；FACT：引用核验,参考报告 / 引用来源,相对参考报告的得分,单次,题均,否,RACE 分 / 引用准确率,DeepResearch Bench 公开榜,2025-06,https://deepresearch-bench.github.io/
+WideSearch,深度研究/检索,宽检索,1 单题直接出分,规则：表格逐格比对（含 LLM 归一）,标准表格,成功率 / 行 F1 / 项 F1,Avg@4、Pass@4、Max@4,题均,否,项 F1（Qwen avg@4）,Qwen3.8、混元 Hy3,2025-08,https://arxiv.org/abs/2508.07999
+PaperBench,深度研究/检索,论文复现,1 单题直接出分,LLM（SimpleJudge；Qwen 用 Opus 4.6）判评分树叶子,作者写的评分树,叶子 pass/fail，父节点加权平均,3 次平均,复现分,否,%,Qwen3.8,2025-04,https://arxiv.org/abs/2504.01848
+EBR-bench（Epoch）,深度研究/检索,研究任务,1 单题直接出分,规则：目标达成,21 个目标,达成目标数,10 次取最后 2 次中较好者,总数,否,x/21,Epoch,2026,https://epoch.ai/benchmarks/ebr-bench
+GDPval（OpenAI 原版）,专业领域（金融/法律/医疗/教育）,经济价值,3.1 对照固定参考产出,人：行业专家盲评,人类专家交付物,胜/平/负,单次,胜或平比例,否（对固定人类参照）,% wins or ties,Grok 4.7、Step 3.7 Flash,2025-10,https://arxiv.org/abs/2510.04374
+GDPval-AA v2 / v2.1,专业领域（金融/法律/医疗/教育）,经济价值,2 多模型相互比较,LLM：每场从三判官池（Claude Opus 5、GPT-5.6 Sol、Gemini 3.8 Flash）抽一个，盲评两份交付物,其他模型,单场胜/平/负,单次,平局记半胜；Crowd-BT 最大似然；95% CI 用 sandwich 估计,是（BT，锚 DeepSeek V4.1 Flash=1600）,Elo,AA 智能指数、几乎所有厂商,2025-11,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+GDP.pdf,专业领域（金融/法律/医疗/教育）,文档交付物,1 单题直接出分,"LLM 逐条判 1,275 条原子标准；AA 版单判官 GPT-5.6 Luna (medium)，Surge 版 Gemini 3.5 Flash",细则,头条全过；次指标逐条比例,5 次,All-pass 题均,否,%,AA 智能指数、Gemini 3.8 Flash、Claude Opus 5,2026,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+Harvey LAB / LAB-AA,专业领域（金融/法律/医疗/教育）,法律代理,1 单题直接出分,LAB-AA：3 个 LLM 判官（GPT-6 Sol、Grok 4.7、Claude Opus 5.5，均 medium）逐条判；Harvey 原版单判官,专家细则,每条细则记判官通过占比（0、⅓、⅔、1）；题分 = 判“全部细则通过”的判官占比；有实质幻觉记 0,单次,头条 Hallucination-Gated All-Pass 对任务宏平均；Criterion Pass Rate 对全部细则微平均,否,%,Artificial Analysis、Gemini 4 Argon、Gemini 3.8 Flash、xAI、Kimi,2026,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+Vals Finance Agent v2（FAB v2）,专业领域（金融/法律/医疗/教育）,金融代理,1 单题直接出分,LLM 判最终答案（判官跑 3 次取众数）,专家细则,partial credit vs all-pass 两口径,单次,题均,否,%（两口径排名会翻转）,Gemini 4 Argon、Gemini 3.5/3.8 Flash、Kimi,2026,https://www.vals.ai/benchmarks/fabv2
+CorpFin v2,专业领域（金融/法律/医疗/教育）,金融长文档,1 单题直接出分,LLM 判（Claude 4.5 Sonnet，温度 0；2025-11-17 起替换 3.5 Sonnet）,标准答案,单信号,单次,准确率,否,%,Kimi K3、Vals,2025,https://www.vals.ai/benchmarks/corp_fin_v2
+Legal Research Bench,专业领域（金融/法律/医疗/教育）,法律检索,1 单题直接出分,LLM 单判官（GPT-5.4）逐条判,法律专家细则（每题 1–22 项）,all-pass（主）vs 加权通过率,单次,题均,否,% all-pass（如 55.29 vs 加权 90.58）,Kimi K3、Vals,2026,https://www.vals.ai/benchmarks/legal_research
+HealthBench / Professional / Hard,专业领域（金融/法律/医疗/教育）,医疗,1 单题直接出分,LLM 逐条判医生细则（含负分条目）,医生细则,满足分值和 ÷ 正分总和,单次；另报 worst@k,"裁到 [0,1] 后均值；Professional 加长度校正",否,%,OpenAI、xAI、Claude Opus 5、Qwen3.8,2025-05,https://arxiv.org/abs/2505.08775
+TutorBench,专业领域（金融/法律/医疗/教育）,教学辅导,1 单题直接出分,LLM（Claude 4 Sonnet）判 3–39 条加权通过/不通过,专家细则,加权得分,单次,题均,否,%,Scale SEAL,2025,https://scale.com/leaderboard/tutorbench
+PRBench（Finance / Legal；SEAL 页面名 Professional Reasoning）,专业领域（金融/法律/医疗/教育）,金融/法律推理,1 单题直接出分,LLM（o4-mini）判 10–30 条细则，权重 −10 到 +10,专家细则,加权分裁到 0–1,单次,题均,否,%,Scale SEAL、Qwen3.8,2025-11,https://scale.com/leaderboard/prbench-legal
+Tax Agent Bench,专业领域（金融/法律/医疗/教育）,税务代理,1 单题直接出分,LLM 判 3–89 条加权（1–3）检查,专家细则,全过才得 1，再乘引用质量（真实来源占比）,单次,题均,否,%,Vals,2026,https://www.vals.ai/benchmarks/tax_agent_bench
+MedCode,专业领域（金融/法律/医疗/教育）,医疗编码,1 单题直接出分,规则：ICD-10 编码比对,2 名认证编码员的金标,按编码精度分档通过,单次,通过率,否,%,Vals,2026,https://www.vals.ai/benchmarks/medcode
+CaseLaw v2（Vals）,专业领域（金融/法律/医疗/教育）,法律,1 单题直接出分,LLM 判,标准答案,单信号,单次,准确率,否,%,Vals,2026,https://www.vals.ai/benchmarks/case_law_v2
+EMB（Vals）,专业领域（金融/法律/医疗/教育）,金融建模（Excel）,1 单题直接出分,模板模式规则逐格比对；从零模式按细则部分给分,标准模型,逐格 / 细则比例,单次,题均,否,%,Vals,2026,https://www.vals.ai/benchmarks/emb
+MedScribe（Vals）,专业领域（金融/法律/医疗/教育）,医疗文书,1 单题直接出分,LLM 按专家细则判 SOAP 病历,专家细则,细则比例,单次,准确率,否,%,Vals,2026,https://www.vals.ai/benchmarks/medscribe
+Public Benefits Bench v1.1（SNAP）,专业领域（金融/法律/医疗/教育）,公共服务问答,1 单题直接出分,LLM 按专家细则判,专家细则,通过 / 不通过,单次,通过率（四种工具条件）,否,%,Vals,2026-06,https://www.vals.ai/benchmarks/public-benefits-bench
+OpenAI MRCR v2,长上下文,长上下文检索,1 单题直接出分,规则：哈希前缀门控 + SequenceMatcher,标准原文,缺前缀→0，否则相似度,单次,按长度桶平均（Context Arena 另报 AUC）,否,均分 / AUC,GPT-6 Astra、Gemini 3.5 Flash、Meta、DeepSeek-V4、Qwen3.8、Context Arena,2025-04,https://huggingface.co/datasets/openai/mrcr
+GraphWalks,长上下文,长上下文推理,1 单题直接出分,规则：节点集合比对,标准节点集合,集合 F1,单次,题均,否,F1,Gemini 4 Argon,2025-04,https://huggingface.co/datasets/openai/graphwalks
+AA-LCR,长上下文,长上下文理解,1 单题直接出分,LLM 判等价,标准答案,单信号,多次平均,准确率,否,%,AA 智能指数、Kimi,2025-08,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+MLCR-AA,长上下文,长上下文,1 单题直接出分,"先过""简洁""门槛，再 3 个 LLM 判官多数票",标准答案,门控 + 多数票,多次平均,准确率,否,%,AA 附加评测,2026,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+CorpusQA 1M,长上下文,超长语料问答,1 单题直接出分,规则：程序化校验答案,程序生成的标准答案,单信号,单次,准确率（128K/1M/4M/10M 分档）,否,%,DeepSeek-V4,2026-01,https://arxiv.org/abs/2601.14952
+LongBench-V2,长上下文,长上下文,1 单题直接出分,规则：多选精确匹配,标准选项,单信号,单次,准确率,否,%,DeepSeek-V4（基座表）,2024-12,https://arxiv.org/abs/2412.15204
+RULER,长上下文,长上下文,1 单题直接出分,规则：字符串包含,合成标准答案,单信号,单次,各长度准确率平均,否,%,开源模型卡（如 Nemotron）,2024-04,https://arxiv.org/abs/2404.06654
+IFBench,指令遵循/多轮对话,指令遵循,1 单题直接出分,规则：58 个验证函数,约束定义,prompt 级全过 vs 指令级比例,多次平均,strict / loose,否,%,AA 附加评测、Qwen3.8,2025-07,https://arxiv.org/abs/2507.02833
+MultiChallenge,指令遵循/多轮对话,多轮对话指令,1 单题直接出分,LLM 判每题一个二元细则问题（与人一致 93%）,题专属细则,单信号,单次,准确率,否,%,Scale SEAL,2025-01,https://scale.com/leaderboard/multichallenge
+Chinese-SimpleQA,多语言/中文,中文/事实性,1 单题直接出分,LLM 三档：对/错/未作答,标准短答案,单信号,单次,correct、CGA、F 分数,否,F 分数 / 准确率 %,DeepSeek-V4,2024-11,https://arxiv.org/abs/2411.07140
+MultiNRC,多语言/中文,多语言推理（法/西/中）,1 单题直接出分,LLM 判短答案（与人一致率 >95%）,标准短答案,单信号,单次,准确率,否,%,Scale SEAL,2025,https://scale.com/leaderboard/multinrc
+Global-MMLU（含 Global-MMLU-Lite）,多语言/中文,多语言知识,1 单题直接出分,规则：4 选 1,标准选项,单信号,单次,按语言准确率→平均,否,%,Claude Opus 5 系统卡、AA Multilingual Index,2024-12,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+MILU,多语言/中文,多语言（印度语言）,1 单题直接出分,规则：选择题,标准选项,单信号,单次,按语言准确率,否,%,Claude Opus 5 系统卡,2024-11,https://arxiv.org/abs/2411.02538
+INCLUDE,多语言/中文,多语言（本地知识）,1 单题直接出分,规则：选择题,标准选项,单信号,单次,按语言准确率,否,%,Claude Opus 5 系统卡,2024-11,https://arxiv.org/abs/2411.19799
+PLawBench,多语言/中文,中文法律实务,1 单题直接出分,LLM（Qwen 用 gemini-3.1-pro）按专家细则,专家细则,得分÷满分,单次,按子任务得分率,否,%,Qwen3.8,2026-01,https://arxiv.org/abs/2601.16669
+BrowseComp-ZH,多语言/中文,中文深度检索,1 单题直接出分,LLM 判短答案,标准短答案,单信号,单次,准确率,否,%,中文研究代理榜,2025-04,https://arxiv.org/abs/2504.19314
+xbench-DeepSearch（2510）,多语言/中文,中文深度检索,1 单题直接出分,先精确匹配，不行再 LLM 判,标准答案,单信号,单次,准确率,否,%,xbench 公开榜,2025-10,https://huggingface.co/datasets/xbench/DeepSearch-2510
+PolyMath,多语言/中文,多语言数学,1 单题直接出分,规则：答案比对,标准答案,单信号,多次,难度加权准确率 (a低+2a中+4a高+8a顶)/15,否,DW-ACC,Qwen3 系（2025）,2025-04,https://arxiv.org/abs/2504.18428
+SuperCLUE 通用榜（月报）,多语言/中文,中文综合,1 单题直接出分,按题型：对标准答案 0/1、单元测试、状态比对、规则脚本，生成题用判官模型（报告人机一致率）,标准答案 / 判官细则,单信号,单次,各维度平均→总分,否,总分,SuperCLUE,2023 起，月更,https://www.cluebenchmarks.com/superclue.html
+OpenCompass CompassBench / CompassAcademic,多语言/中文,中文综合,1 单题直接出分,选择题 CircularEval；学术榜用 CompassVerifier-32B 判,标准答案,CircularEval perf_4：选项轮换 4 次全对才得分,单次,各维度平均,否,%,OpenCompass,2024 起,https://github.com/open-compass/CompassBench
+MMMU-Pro,多模态理解,多模态推理,1 单题直接出分,规则：正则抽答案,标准选项,单信号,单次,准确率,否,%,AA 附加评测、Gemini 3.5 Flash、Kimi、Seed 2.1、MiniMax-M3,2024-09,https://arxiv.org/abs/2409.02813
+CharXiv（RQ）,多模态理解,图表理解,1 单题直接出分,LLM（官方 GPT-4o）抽答案并判语义等价 0/1,标准答案,单信号,单次,准确率,否,%,Gemini 3.5/3.8 Flash、Kimi、Seed 2.1、Qwen3.8,2024-06,https://charxiv.github.io/
+Chartography,多模态理解,图表,1 单题直接出分,LLM 判：只看题目、标准答案和回答，不看图,标准答案（允许区间）,多部分答案全对才算,单次,pass@1,否,%,Claude Opus 5.5、Gemini 4 Argon,2026-08,https://surgehq.ai/benchmarks/chartography
+ZeroBench,多模态理解,极难视觉,1 单题直接出分,规则：答案比对,标准答案,单信号,5 次：pass@5 和 5/5 全对,题均,否,%,Kimi K3、Seed 2.1,2025-02,https://zerobench.github.io/
+MathVision,多模态理解,视觉数学,1 单题直接出分,规则：答案比对,标准答案,单信号,单次,准确率,否,%,Kimi K3、Seed 2.1,2024-02,https://arxiv.org/abs/2402.14804
+OmniDocBench（v1.5）,多模态理解,文档解析,1 单题直接出分,规则：文本编辑距离、表格 TEDS、公式 CDM,标注文档,页级连续分,单次,Overall = ((1−文本编辑距离)×100 + TEDS + CDM)/3,否,Overall 分,Kimi K3,2024-12,https://github.com/opendatalab/OmniDocBench
+BenchCAD,多模态理解,CAD 生成,1 单题直接出分,规则：几何重叠度,参考 CAD 模型,0–1 连续,单次,题均,否,IoU 类分,GPT-6 Astra、Claude Opus 5,2026,https://openai.com/index/gpt-6-astra/
+VisualToolBench,多模态理解,多模态工具使用,1 单题直接出分,"LLM（o4-mini）逐条判 7,777 条细则",细则（权重 1–5）,APR：所有关键项（权重 4–5）都过；ARS：加权比例,单次,题均,否,APR % / ARS,Scale SEAL,2025,https://scale.com/leaderboard/vtb
+VISTA（Visual Language Understanding）,多模态理解,多模态理解,1 单题直接出分,3 个 LLM 判官多数票逐条判,细则,ATA=满足细则比例,3 次,题均,否,%,Scale SEAL,2026,https://scale.com/leaderboard/visual_language_understanding
+OpenScore String Quartets（OMR）,多模态理解,乐谱识别,1 单题直接出分,规则：OMR-NED 编辑距离,人工转录乐谱,1 − OMR-NED,单次,题均,否,分数,GPT-6 Astra,2026-08,https://arxiv.org/abs/2608.10978
+WorldVQA,多模态理解,多模态事实性,1 单题直接出分,LLM 三档（SimpleQA 式）,标准短答案,单信号,单次,准确率、CGA、F,否,%,Kimi K3、Seed 2.1,2026-02,https://arxiv.org/abs/2602.02537
+BabyVision,多模态理解,基础视觉,1 单题直接出分,抽 \boxed{} 后 LLM（Qwen3-Max）判等价,标准答案,单信号,多次 mean ± std,准确率,否,%,Kimi K3、Seed 2.1、Qwen3.8,2026-01,https://arxiv.org/abs/2601.06521
+ERQA,多模态理解,具身推理,1 单题直接出分,规则：选项字母,标准选项,单信号,单次,准确率,否,%,Seed 2.1、Qwen3.8,2025-03,https://github.com/embodiedreasoning/ERQA
+Vision2Web,多模态理解,视觉→网页,1 单题直接出分,VLM 视觉分 + GUI 代理功能分,设计稿 / 功能清单,两分组合,单次,题均,否,分数,Qwen3.8,2026-03,https://github.com/zai-org/Vision2Web
+SimpleVQA,多模态理解,多模态事实性,1 单题直接出分,LLM 三档：对/错/未作答,标准短答案,单信号,单次,correct、CGA、F,否,%,Step 3.7 Flash,2025-02,https://arxiv.org/abs/2502.13059
+V* Bench,多模态理解,高分辨率视觉搜索,1 单题直接出分,规则：选项字母,标准选项,单信号,单次,准确率,否,%,Step 3.7 Flash,2023-12,https://vstar-seal.github.io/
+LVBench,视频理解,长视频,1 单题直接出分,规则：多选,标准选项,单信号,单次,准确率,否,%,Gemini 4 Argon、Gemini 3.8 Flash、Qwen3.8,2024-06,https://arxiv.org/abs/2406.08035
+Video-MME（v1 / v2）/ MMVU,视频理解,视频理解,1 单题直接出分,规则：多选,标准选项,v1 单信号；v2 按组非线性：组内答对 N/4 记 (N/4)²，推理组首错截断,多次平均,准确率 / 组分平均,否,%,Kimi K3、Seed 2.1、MiniMax-M3,2024-05 / 2026-04,https://arxiv.org/abs/2604.05015
+Humanity's Sixth Sense（HSS）,视频理解,多模态感知（图像/视频）,1 单题直接出分,LLM（Claude Opus 5）逐条判,标准细则,逐条,3 次平均 pass@1,题均，95% 区间（按题 bootstrap）,否,%（人类 93.1%）,Scale SEAL,2026,https://labs.scale.com/papers/humanitys-sixth-sense
+OVO-Bench,视频理解,流式视频,1 单题直接出分,规则：多选；前向主动回答加延迟惩罚 2^(−delay·p),标准答案 + 时间点,单信号 × 时效衰减,单次,任务→类别→总平均,否,%,Seed 2.1,2025-01,https://github.com/JoeLeelyf/OVO-Bench
+Audio MultiChallenge,语音/音频,语音对话,1 单题直接出分,LLM（o4-mini，κ≈.87）判最后一轮原子细则,题专属细则,全部细则过,单次,通过率（文本/语音输出两模式）,否,%,Scale SEAL,2026,https://scale.com/leaderboard/audiomc
+AA Speech-to-Speech Index（含 Big Bench Audio）,语音/音频,语音对话,3.5 跨 bench 合成指数,Big Bench Audio：先转写再 LLM 判；τ-Voice；Arena 分；任务成功率,标准答案 / 其他模型,各组件自身口径,—,4 组件各 25% 等权,部分（Arena 组件为 BT）,指数,Artificial Analysis,2026,https://artificialanalysis.ai/methodology/speech-to-speech-benchmarking
+AA-WER v2（Speech-to-Text）,语音/音频,语音识别,1 单题直接出分,规则：归一化后 Levenshtein WER,人工转写,按时长加权的 WER,单次,AgentTalk 50% / VoxPopuli 25% / Earnings22 25%,否,WER %（越低越好）,Artificial Analysis,2026,https://artificialanalysis.ai/articles/aa-wer-v2
+VoiceCodeBench（Vals）,语音/音频,语音识别（结构化值）,1 单题直接出分,规则：目标实体逐个比对,标准实体,TSR：一段录音所有实体都对才算,单次,TSR；另报 CTEM（实体级部分分）,否,TSR %,Vals,2026-09,https://www.vals.ai/benchmarks/voice-code-bench
+AA Text-to-Speech Arena,图像/视频/语音生成,语音合成,2 多模型相互比较,人：盲听二选一,另一个模型,单场胜负,—,BT，锚 1000,是（BT）,Elo,Artificial Analysis,2025,https://artificialanalysis.ai/methodology/text-to-speech
+AA Image / Video Arena（文生图、图像编辑、文生视频、图生视频）,图像/视频/语音生成,图像/视频生成,2 多模型相互比较,人：盲评面板投票,另一个模型,单场胜负,—,BT；Text-to-Video v2.0 重置为只用面板票,是（BT）,Elo,Artificial Analysis、厂商引用（Seedream 5.0 等）,2025,https://artificialanalysis.ai/image/methodology
+Gray Swan IPI Arena,安全与诚实,提示注入安全,1 单题直接出分,程序检查 + 隐蔽性 LLM 判官（>7/10）,攻击目标,攻击成功且隐蔽才算,单次,ASR = 判定成功的提交 ÷ 全部对话,否,ASR %（越低越好）,Gemini 4 Argon、Claude Opus 5.5,2026-03,https://arxiv.org/abs/2603.15714
+OpenAI Production Benchmarks / Challenging prompts,安全与诚实,安全拒答,1 单题直接出分,LLM 自动评分器判 not_unsafe,安全策略,单信号,单次,按类别比例,否,not_unsafe %,GPT-6 十月系统卡、GPT-6.1 Sol 系统卡,2025,https://deploymentsafety.openai.com/gpt-6-october/evaluations-with-challenging-prompts
+Arena Alignment Index,安全与诚实,真实会话安全,3.4 真实使用数据,LLM 按细则在真实会话找违规,安全细则,长度校正发生率→1−√率,—,三类 50/25/25 加权,否,指数,Arena,2026-10,https://arena.ai/blog/ai-alignment-index
+PropensityBench,安全与诚实,安全（行为倾向）,1 单题直接出分,规则：看是否调用了被禁的危险工具,无（行为本身）,每个场景 1/0,12 级逐步加压,倾向分 = 选危险工具的场景比例；有害名/中性名两版及差值,否,倾向 %（越低越好）,Scale SEAL,2025,https://scale.com/leaderboard/propensitybench
+FORTRESS,安全与诚实,安全（对抗提示）,1 单题直接出分,3 个 LLM 判官（o3、Claude 3.7、Gemini 2.5 Pro）多数票判 4–7 个二元问题；拒答检查器 gpt-4o-mini,每题专属风险问题；配对良性提示,"ARS：判""是""的比例；ORS：良性提示被拒比例",单次,题均；按 ARS 排名,否,ARS（越低越好）/ ORS,Scale SEAL,2025,https://scale.com/leaderboard/fortress
+MASK,安全与诚实,诚实度,1 单题直接出分,LLM 判：先诱导模型真实信念，再看施压下的陈述是否矛盾,模型自己的信念,是否撒谎,单次,诚实度 = 1 − P(撒谎),否,honesty %（Opus 5 卡 n=904）,Scale SEAL、Claude Opus 5 系统卡,2025-03,https://arxiv.org/abs/2503.03750
+SHADE-Arena,安全与诚实,安全（暗中破坏）,1 单题直接出分,监控模型给可疑分；规则判副任务完成,监控阈值（可疑分 <80）,"副任务完成且未被发现才算""隐蔽成功""",单次,24 个任务平均 + bootstrap CI,否,隐蔽成功率 %,Claude Opus 5 系统卡,2025-06,https://www-cdn.anthropic.com/b514064af1408018e64b1ad24e7d5e75850b4ffd/claude%20opus%205%20system%20card.pdf
+LinuxArena（Redwood）,安全与诚实,安全（控制评测）,1 单题直接出分,Opus 4.6 监控 + 副任务检查,监控阈值,隐蔽完成副任务,单次,比例,否,%,Claude Opus 5 系统卡,2026,https://www-cdn.anthropic.com/b514064af1408018e64b1ad24e7d5e75850b4ffd/claude%20opus%205%20system%20card.pdf
+政治中立性评测（Anthropic）,安全与诚实,安全（偏见）,1 单题直接出分,Claude 判官判中立性、是否呈现对立观点、是否拒答,"配对提示（1,350 对）",三项各自比例,单次,比例,否,%,Claude Opus 5 系统卡,2025-11,https://www-cdn.anthropic.com/b514064af1408018e64b1ad24e7d5e75850b4ffd/claude%20opus%205%20system%20card.pdf
+BBQ,安全与诚实,安全（偏见）,1 单题直接出分,规则：选择题,标准选项,单信号,单次,歧义/非歧义题准确率 + 偏见分,否,% + bias score,Claude Opus 5 系统卡,2021,https://arxiv.org/abs/2110.08193
+VCT-v2（Virology Capabilities Test）,安全与诚实,生物安全能力,1 单题直接出分,规则：多选全对,标准选项集合,all-or-nothing（多选全部选对）,单次,准确率,否,%,系统卡（OpenAI、Anthropic、xAI）,2026,https://securebio.org/blog/introducing-vct-v2/
+SAFE-Teen（Vals）,安全与诚实,安全（青少年心理健康）,1 单题直接出分,LLM（Claude Sonnet 5.5）逐项判 pass/partial/fail,临床医生设计的安全检查,逐项,分支对话；有/无 system prompt 各跑一次,失败率 = fail 占全部评分比例,否,失败率 %（越低越好）,Vals,2026,https://www.vals.ai/benchmarks/mental-health
+CyberGym（含 CyberGym-E2E-AA）,网络安全,网络安全,1 单题直接出分,规则：执行 PoC 看是否复现漏洞,漏洞版本程序,单信号,单次；AA pass@1,成功率,否,%,GLM-5.3、AA Cyber Index,2025-06,https://arxiv.org/abs/2506.02548
+ExploitBench,网络安全,网络安全,1 单题直接出分,规则：16 个二值能力旗标（5 档阶梯）,能力阶梯,每 bug 每旗标在任一提交中出现即得,3 次取并集（best-of-3 union）,656 个 bug×能力格的覆盖率,否,覆盖率 %,GPT-6 Astra、GLM-5.3、Claude Opus 5 系统卡,2026-05,https://exploitbench.ai/
+ExploitGym,网络安全,网络安全,1 单题直接出分,规则：利用是否成功,无,单信号,单次,GLM：预算内完成数按 TPS 归一；OpenAI：去 6h 上限成功率,否,完成数 / %,GPT-6 Astra、GLM-5.3,2026,https://openai.com/index/gpt-6-astra/
+SRE-Bench（OpenAI，二进制逆向）,网络安全,二进制逆向工程,1 单题直接出分,规则,隐藏检查,单信号,单次 + pass@4,解决率,否,%,GPT-6 Astra,2026-08,https://arxiv.org/abs/2608.11469
+CWE-bench（含 CWE-Bench-AA）,网络安全,漏洞检测,1 单题直接出分,规则,标注漏洞,单信号,pass@1，平手看 pass@4,检出率,否,%,Gemini 4 Argon、AA Cyber Index,2026,https://deepmind.google/models/evals-methodology/gemini-4-argon
+SEC-bench Pro,网络安全,漏洞复现,1 单题直接出分,规则：PoC 在漏洞版/修复版/最新版镜像上跑 + LLM 判官,三个镜像的期望行为,单信号,单次,成功率,否,%,GPT-6 Astra,2026-05,https://arxiv.org/abs/2605.26548
+CyberBench v1.1（Vals）,网络安全,网络安全,1 单题直接出分,规则：OSS-Fuzz ARVO 复现 PoC / 补丁验证,漏洞复现与修复测试,拒答=失败,单次；fallback 报反事实分,PoC 轨（60）+ Patch 轨（56）,否,%,Vals,2026,https://www.vals.ai/benchmarks/cyber
+Cybench,网络安全,网络安全（CTF）,1 单题直接出分,规则：flag 匹配,标准 flag,单信号,单次（unguided）,成功率,否,%,2026 系统卡,2024-08,https://cybench.github.io/
+Firefox 147 漏洞利用评测（Anthropic）,网络安全,网络安全,1 单题直接出分,规则：利用程度,无,0 / 0.5（控制寄存器）/ 1.0（完整利用）,250 次,均分,否,分数,Claude Opus 5 系统卡,2026,https://www-cdn.anthropic.com/b514064af1408018e64b1ad24e7d5e75850b4ffd/claude%20opus%205%20system%20card.pdf
+CyScenarioBench（Irregular）,网络安全,网络安全（多步场景）,1 单题直接出分,规则：场景检查,任务 / 路径 / 战役三档,分档,单次,分档成功率,否,%,Claude Opus 5 系统卡,2026,https://www-cdn.anthropic.com/b514064af1408018e64b1ad24e7d5e75850b4ffd/claude%20opus%205%20system%20card.pdf
+MentalHealthBench（OpenAI）,情感/心理健康/写作,心理健康对话,1 单题直接出分,"LLM（GPT-5.6 Sol）逐条二元判 5,262 条临床细则，权重 −10 到 +10",临床细则,加权得分,单次,题均,否,%,OpenAI,2026-09,https://openai.com/index/introducing-mentalhealthbench/
+EQ-Bench 3,情感/心理健康/写作,情感智能,2 多模型相互比较,LLM 判：细则打分 + 两两比较,细则 + 其他模型,0–100 细则分,单次,两两比较拟合 TrueSkill Elo,是（TrueSkill，o3=1500）,Elo,EQ-Bench 榜,2025,https://eqbench.com/
+Arena 成对投票家族（Text/WebDev/Vision/Document/Search/T2I/Image Edit/Video）,偏好竞技场/真实使用,综合偏好,2 多模型相互比较,人：用户盲投,另一个模型,单场胜/平/负,—,BT 拟合 + 风格控制,是（BT）,Arena score + CI,Arena、厂商常引用,2023-05 滚动,https://lmarena.ai/leaderboard
+Arena AutoEval,偏好竞技场/真实使用,偏好代理,2 多模型相互比较,奖励模型投软票（用人票训练）,另一个模型,软票,—,和人票一起进 BT,是（BT）,Arena score,Arena,2026,https://arena.ai/blog/autoeval-scores
+Agent Arena,偏好竞技场/真实使用,真实代理使用,3.4 真实使用数据,真实使用信号,均匀基线,5 个信号各做 IPS,—,等权平均，时间衰减,是（因果估计）,Net Improvement %,Arena,2026,https://arena.ai/blog/agent-arena-methodology
+OpenRouter Rankings,偏好竞技场/真实使用,市场使用,3.4 真实使用数据,无判官：token 用量,其他模型份额,—,—,按 token/花费份额排,否,份额,OpenRouter,滚动,https://openrouter.ai/rankings
+Design Arena,偏好竞技场/真实使用,前端与设计生成,2 多模型相互比较,人：用户投票,同场其他模型,一次会话 4 个模型，分组比 5 场两两,单次,BT（迭代到变化 <0.0001 或满 200 次），rating = 400·log10(实力),是,Elo,Design Arena 公开榜,2025,https://www.designarena.ai/about
+SAGE（Vals）,判官/奖励模型评测,判官评测（批改学生作业）,3.6 评测判官本身,规则：比对专家扣分,专家批改,单信号,单次,类别平衡准确率,否,%,Vals,2026,https://www.vals.ai/benchmarks/sage
+RewardBench 2,判官/奖励模型评测,奖励模型评测,3.6 评测判官本身,规则：RM 是否把正确回答打最高,1 好 3 坏,4 选 1（best-of-4）,单次,6 领域等权；Ties 单独,否,%,奖励模型论文与卡,2025-06,https://arxiv.org/abs/2506.01937
+ProcessBench,判官/奖励模型评测,过程奖励模型评测,3.6 评测判官本身,规则：找最早出错步骤,标注首错位置,单信号,单次,正误两类准确率的调和平均（F1）,否,F1,PRM 论文,2024-12,https://arxiv.org/abs/2412.06559
+JudgeBench,判官/奖励模型评测,判官评测,3.6 评测判官本身,规则：判官选对更好的回答,客观正确性标签,换位判两次需一致,单次,准确率,否,%,判官模型论文,2024-10,https://arxiv.org/abs/2410.12784
+预训练基座 few-shot 套件（DeepSeek-V4 基座表 24 项）,基座评测,基座评测,1 单题直接出分,规则：k-shot 后 EM / F1 / pass@1,标准答案,单信号,单次,各项准确率,否,各项 %,DeepSeek-V4,—,https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro
+OlmoBaseEval（含 Base Easy BPB）,基座评测,基座评测,1 单题直接出分,规则：对数似然 CF/MCF、BPB、生成题匹配,标准答案文本,acc / acc_norm / BPB,单次,按能力簇宏平均,否,簇均分 / BPB,AI2 OLMo 3,2025-11,https://allenai.org/olmo
+Uncheatable Eval,基座评测,基座语言建模,1 单题直接出分,规则：计算压缩率,新采集的文本,—,单次,压缩率,否,压缩率,论文自带 80 个模型的排名,2026-09,https://arxiv.org/abs/2609.27510
+AA Intelligence Index v4.3.2,聚合指数,聚合指数,3.5 跨 bench 合成指数,继承组件,继承,—,—,10 组件固定权重；Elo 类先 clamp((Elo−500)/2000),继承（含 BT 组件）,指数分,Artificial Analysis、厂商常引用,2026-09,https://artificialanalysis.ai/methodology/intelligence-benchmarking
+AA Coding Agent Index,聚合指数,聚合指数（代码代理）,3.5 跨 bench 合成指数,继承,继承,—,组件 pass@1 3 次平均,3 个组件等权；作弊试次记 0,否,指数分,Artificial Analysis、GPT-6 Astra 引用,2026,https://artificialanalysis.ai/agents/coding-agents
+Vals Index,聚合指数,聚合指数,3.5 跨 bench 合成指数,继承,继承,—,—,按行业占美国 GDP 比例加权,否,指数分,Vals、Gemini 4 Argon 引用,2025,https://www.vals.ai/benchmarks/vals_index
+Epoch Capabilities Index（ECI）,聚合指数,聚合指数,3.5 跨 bench 合成指数,继承,继承,—,—,50+ bench IRT 式联合拟合,是（IRT，定标 Claude 3.5 Sonnet=130、GPT-5=150）,ECI 分,Epoch,2025-10,https://epoch.ai/benchmarks/eci
+AA Cyber Index（含 DeepsecBench-AA）,聚合指数,网络安全聚合,3.5 跨 bench 合成指数,继承：CWE-Bench-AA、DeepsecBench-AA（F2，3 次取中位）、CyberGym-E2E-AA,继承,拒答记 0,各组件自身口径,3 组件等权平均,否,指数,Artificial Analysis,2026,https://artificialanalysis.ai/evaluations/artificial-analysis-cyber-index
+AIME 2024 / 2025,数学,竞赛数学,1 单题直接出分,规则：整数答案,标准答案,单信号,avg@k、cons@64,准确率,否,%,,2024 / 2025,https://artofproblemsolving.com/wiki/index.php/AIME_Problems_and_Solutions
+MLE-bench,科学,ML 工程,3.2 换算成人类的量,规则：Kaggle 指标,人类 Kaggle 排行（奖牌线）,是否拿到奖牌,多种子,奖牌率,否（对人类排名）,奖牌率 %,,2024-10,https://github.com/openai/mle-bench
+HumanEval / MBPP / EvalPlus,代码/软件工程,代码,1 单题直接出分,规则：单元测试,测试,全过,n 次采样,无偏 pass@k,否,pass@k,仅基座表,2021,https://arxiv.org/abs/2107.03374
+Vals Mortgage Tax / TaxEval v2,专业领域（金融/法律/医疗/教育）,税务,1 单题直接出分,LLM 判答案正确性和推理,标准答案,单信号,单次,准确率,否,%,,2024–2025,https://www.vals.ai/benchmarks/tax_eval_v2
+Fiction.LiveBench,长上下文,长上下文,1 单题直接出分,LLM 判,标准答案,单信号,单次,各长度准确率,否,%,,2025,https://fiction.live/stories/Fiction-liveBench
+NoLiMa,长上下文,长上下文,1 单题直接出分,规则,标准答案,单信号,单次,有效长度（≥基线 85%）,否,有效长度,,2025-02,https://arxiv.org/abs/2502.05167
+IFEval,指令遵循/多轮对话,指令遵循,1 单题直接出分,规则：验证函数,约束,prompt 级 / 指令级,单次,strict / loose,否,%,,2023-11,https://arxiv.org/abs/2311.07911
+MT-Bench,指令遵循/多轮对话,多轮对话,1 单题直接出分,LLM 1–10 打分,无,单次,单次,均分,否,分数,,2023,https://arxiv.org/abs/2306.05685
+Multi-IF,指令遵循/多轮对话,多语言多轮指令,1 单题直接出分,规则：IFEval 式验证,约束,逐轮,单次,多轮准确率,否,%,,2024-10,https://arxiv.org/abs/2410.15553
+VBench-2.0,图像/视频/语音生成,视频生成,1 单题直接出分,规则 + VLM 各维度,维度检查,维度分,单次,维度平均,否,分数,,2025-03,https://arxiv.org/abs/2503.21755
+K-Sort Arena,图像/视频/语音生成,图像与视频生成,2 多模型相互比较,人：一次给 K 个模型排序,同场其他模型,K 方排序,单次,Thurstone 式贝叶斯模型，排名用保守分 μ−3σ,是,分数,,2024-08,https://arxiv.org/abs/2408.14468
+HPSv3 Benchmark,图像/视频/语音生成,文生图,3.3 没有满分的开放量,学来的打分器：HPSv3 偏好模型,无（分数没有上限）,单信号,单次,12 类平均,否,分数（如 Kolors 10.55、Flux-dev 10.43）,ICCV 2025 论文,2025-08,https://mizzenai.github.io/HPSv3.project/
+StrongREJECT,安全与诚实,安全（越狱）,1 单题直接出分,LLM 打分（拒绝 × 具体性 × 说服力）,无,连续分,单次,均值,否,分数,,2024-02,https://arxiv.org/abs/2402.10260
+AgentDojo,安全与诚实,提示注入,1 单题直接出分,规则：任务检查,攻击目标,单信号,单次,攻击下效用 + 定向 ASR,否,%,,2024-06,https://agentdojo.spylab.ai/
+WritingBench,情感/心理健康/写作,写作,1 单题直接出分,7B 评分模型按 5 条题专属标准打 1–10,题专属标准,5 条平均,单次,均分,否,1–10,,2025-03,https://arxiv.org/abs/2503.05244
+AlpacaEval 2 LC,偏好竞技场/真实使用,对话偏好,3.1 对照固定参考产出,LLM 对固定基线判胜负,固定基线模型,胜/负,单次,长度回归去偏后胜率,否,LC 胜率,,2024,https://github.com/tatsu-lab/alpaca_eval
+Arena-Hard v2,偏好竞技场/真实使用,对话偏好,3.1 对照固定参考产出,LLM 对固定基线五档判决，换位两次,固定基线,强胜×3,单次,胜率（风格控制版先拟合 BT）,是（风格控制版 BT）,胜率,,2025,https://github.com/lmarena/arena-hard-auto
+WildBench,偏好竞技场/真实使用,对话偏好,3.1 对照固定参考产出；1 单题直接出分,LLM：WB-Reward 对基线五档；WB-Score 1–10,基线模型,五档 / 1–10,单次,均值（长度阈值 K）,否,分数,,2024-06,https://arxiv.org/abs/2406.04770
+ONEBench,聚合指数,跨 bench 聚合,3.5 跨 bench 合成指数,继承各样本的原始结果,其他模型,样本级排序,—,Plackett–Luce 最大似然合成模型排名,是,排名,ACL 2025 论文,2024-12,https://arxiv.org/abs/2412.06745
