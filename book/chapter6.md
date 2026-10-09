@@ -51,7 +51,7 @@ $N=10$ 时 $\mathbb{E}[\max Z]\approx 1.54$，SE 为 10 分的话，公开出来
 题库是从"所有可能的题"里抽出来的一份样本，分数天然带着抽样误差。最简单的标准误是
 
 $$
-\mathrm{SE}=\sqrt{\frac{\widehat{\operatorname{Var}}(s_i)}{n}},\qquad \text{二值时}\ \mathrm{SE}=\sqrt{\frac{p(1-p)}{n}}
+\mathrm{SE}=\sqrt{\frac{\widehat{\mathrm{Var}}(s_i)}{n}},\qquad \text{二值时}\ \mathrm{SE}=\sqrt{\frac{p(1-p)}{n}}
 $$
 
 200 道题、准确率 0.70，95% 区间是正负 6.35 个百分点，这样的榜上差 5 个点并不稳。Llama 3 报告用 $1.96\sqrt{S(1-S)/N}$ 给每个分数配区间：分数 0.30、题量 30 时（AIME 一年就 30 题），区间是正负 16.4 个点；题量 500 时是正负 4.0（`python3 scripts/basics.py` §13、[Miller](https://arxiv.org/abs/2411.00640)）。
@@ -59,7 +59,7 @@ $$
 比较两个模型时，单独的标准误会把事情说得太悲观。两个模型做的是同一批题，难题两个都容易错，结果正相关，差值的方差要减掉协方差：
 
 $$
-\operatorname{Var}(\bar a-\bar b)=\frac{\operatorname{Var}(a)+\operatorname{Var}(b)-2\operatorname{Cov}(a,b)}{n}
+\mathrm{Var}(\bar a-\bar b)=\frac{\mathrm{Var}(a)+\mathrm{Var}(b)-2\mathrm{Cov}(a,b)}{n}
 $$
 
 模拟 200 道题，A 0.705、B 0.580，不配对的标准误是 0.0476，配对后是 0.0419。

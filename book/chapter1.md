@@ -15,7 +15,7 @@
 最省事的情况是题目有一个短答案：一个数、一个选项、一个人名。程序把模型的最终答案找出来，和标准答案比，相同记 1，不同记 0：
 
 $$
-s=\mathbb{1}\big[\operatorname{norm}(\operatorname{extract}(y))=\operatorname{norm}(y^{*})\big]
+s=\mathbb{1}\big[\mathrm{norm}(\mathrm{extract}(y))=\mathrm{norm}(y^{*})\big]
 $$
 
 $y$ 是模型的整段输出， $y^{*}$ 是标准答案，extract 是"找答案"的规则，norm 是比较前的清理，比如去掉逗号和货币符号、统一大小写。
@@ -37,7 +37,7 @@ Math-Verify 会判 `{1,3} ∪ {2,4}` 等于 `{1,2,3,4}`，判 `1/3` 等于 `0.33
 指令遵循题换了一种比法。IFEval、IFBench 给每条能机检的要求配一个检查函数，比如"全文小写"、"以某句话结尾"。strict 口径直接检查原始回复；loose 口径先对回复做 8 种变换（去掉 markdown 的星号、去掉第一行、去掉最后一行，以及它们的组合），任何一种变换后通过就算过：
 
 $$
-\operatorname{loose}(r,i)=\bigvee_{t=1}^{8}\operatorname{check}_i\big(\operatorname{transform}_t(r)\big)
+\mathrm{loose}(r,i)=\bigvee_{t=1}^{8}\mathrm{check}_i\big(\mathrm{transform}_t(r)\big)
 $$
 
 一道题要求"全文小写"和"以 `p.s. i do like the cake` 结尾"，回复第一行是 `Sure, here it is:`，最后一行是 `p.s. **i do like the cake**`。strict 下两条都不过；loose 下去掉第一行、再去掉星号，两条都过。IFEval 论文自己说 loose 能减少误杀，也可能放进误判（[IFEval](https://arxiv.org/abs/2311.07911)）。
