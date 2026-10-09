@@ -65,8 +65,8 @@ def overview():
         ("真实使用数据", PURPLE, []),
         ("跨 bench 合成指数", GREEN, []),
     ]
-    fig, ax = plt.subplots(figsize=(13, 9.6))
-    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
+    fig, ax = plt.subplots(figsize=(13, 10.2))
+    ax.set_xlim(0, 1); ax.set_ylim(-0.06, 1); ax.axis("off")
     ax.text(0.5, 0.975, f"附录收录的 {total} 个 bench，按分数的来路分四类", ha="center", va="center", fontsize=16, weight="bold")
     x = 0.04
     for name, color, _ in cols:
@@ -84,8 +84,13 @@ def overview():
             continue
         h, gap = 0.06, 0.026
         y = y0 - 0.045
-        ax.plot([x0 + 0.01, x0 + 0.01], [y0, y - (len(subs) - 1) * (h + gap) - h / 2], color=color, lw=1.4)
-        for s in subs:
+        extra = 0.06 if len(subs) > 5 and subs[5].startswith("1.6") else 0
+        ax.plot([x0 + 0.01, x0 + 0.01], [y0, y - (len(subs) - 1) * (h + gap) - h / 2 - extra], color=color, lw=1.4)
+        for i, s in enumerate(subs):
+            if extra and i == 5:
+                ax.plot([x0 + 0.03, x0 + w], [y - 0.008, y - 0.008], color=GREY, lw=1, ls="--")
+                ax.text(x0 + 0.03 + (w - 0.03) / 2, y - 0.032, "几种特殊情况，判法仍是上面五种之一", ha="center", va="center", fontsize=9.5, color=GREY)
+                y -= extra
             n = sub[s]
             ax.plot([x0 + 0.01, x0 + 0.03], [y - h / 2, y - h / 2], color=color, lw=1.4)
             box(ax, x0 + 0.03, y - h, w - 0.03, h, f"{s}\n{n} 个 · {n / total:.1%}", color, fs=10.5, fill="white")
@@ -115,19 +120,27 @@ def pipeline():
         ("模型输出", "一段回答、一份补丁\n或一串操作", GREY),
         ("判一道题", "程序对答案、跑测试\n模型判官、两两比较", BLUE),
         ("合并多条判定", "多条细则、多个判官\n门控和阈值", BLUE),
-        ("合并多次采样", "平均、至少对一次\n每次都对、投票", PURPLE),
+        ("合并多次采样", "平均、至少对一次\n每次都对", PURPLE),
         ("整套题合成总分", "平均、拟合对局\n换算成人类的量", GREEN),
         ("跨 bench 合成", "加权指数\n联合拟合", GREEN),
     ]
-    fig, ax = plt.subplots(figsize=(14, 3.3))
+    fig, ax = plt.subplots(figsize=(14, 4.6))
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
     w, gap = 0.145, 0.025
+    by = 0.36
     for i, (t, d, c) in enumerate(steps):
         x = 0.01 + i * (w + gap)
-        box(ax, x, 0.52, w, 0.3, t, c, fs=13, weight="bold")
-        ax.text(x + w / 2, 0.3, d, ha="center", va="center", fontsize=10.5, color="#444444", linespacing=1.5)
+        box(ax, x, by, w, 0.2, t, c, fs=13, weight="bold")
+        ax.text(x + w / 2, by - 0.12, d, ha="center", va="center", fontsize=10.5, color="#444444", linespacing=1.5)
         if i < len(steps) - 1:
-            arrow(ax, x + w + 0.002, 0.67, x + w + gap - 0.002, 0.67)
+            arrow(ax, x + w + 0.002, by + 0.1, x + w + gap - 0.002, by + 0.1)
+    # 另一条路：先对答案投票或挑一个，再判
+    x0 = 0.01; x1 = 0.01 + (w + gap)
+    bx, bw = x0 + w * 0.3, x1 + w * 0.7 - (x0 + w * 0.3)
+    box(ax, bx, 0.74, bw, 0.16, "多次采样先对答案投票或挑一个\n（maj@k、选择器）", PURPLE, fs=10.5)
+    arrow(ax, x0 + w * 0.5, by + 0.2, bx + 0.01, 0.74)
+    arrow(ax, bx + bw - 0.01, 0.74, x1 + w * 0.5, by + 0.2)
+    ax.text(bx + bw + 0.025, 0.82, "另一条路：先合答案，再判", ha="left", va="center", fontsize=10.5, color=PURPLE)
     ax.text(0.5, 0.02, "每一步都有几种做法，选哪一种都会改变最后的数字", ha="center", fontsize=11, color=GREY)
     save(fig, "pipeline.png")
 

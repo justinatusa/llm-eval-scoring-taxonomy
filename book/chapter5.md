@@ -14,7 +14,7 @@ $$
 \operatorname{norm}(\text{Elo})=\operatorname{clamp}\Big(\frac{\text{Elo}-500}{2000},\,0,\,1\Big)
 $$
 
-Elo 1100 对应 0.30，1600 对应 0.55，2600 以上一律是 1。一个虚构模型：Briefcase 1300（0.40）、GDPval-AA 1600（0.55），其余八项依次是 0.50、0.40、0.45、0.50、0.60、0.30、0.70、0.30、0.10，按权重加起来是 0.41，指数 41（`python3 scripts/basics.py` §10）。归一化区间决定了组件的实际分量：Elo 每涨 100 分，只给指数加 $0.05\times w$。3.8 节说过，这两项的 Elo 在模型进入指数时就冻结了。AA 明说权重偏向 agent 任务，指数的版本号一变，组件、判官、锚点都可能跟着变，跨版本不能比（[AA 方法页](https://artificialanalysis.ai/methodology/intelligence-benchmarking)）。
+Elo 1100 对应 0.30，1600 对应 0.55，2600 以上一律是 1。一个虚构模型：Briefcase 1300（0.40）、GDPval-AA 1600（0.55），其余八项依次是 0.50、0.40、0.45、0.50、0.60、0.30、0.70、0.30、0.10，按权重加起来是 0.41，指数 41（`python3 scripts/basics.py` §10）。归一化区间决定了组件的实际分量：Elo 每涨 100 分，组件分只涨 0.05，在没碰到上下限时只给指数加 $5\times w$ 分，权重 15% 就是 0.75 分。3.8 节说过，这两项的 Elo 在模型进入指数时就冻结了。AA 明说权重偏向 agent 任务，指数的版本号一变，组件、判官、锚点都可能跟着变，跨版本不能比（[AA 方法页](https://artificialanalysis.ai/methodology/intelligence-benchmarking)）。
 
 权重是编辑的选择，也就是一种价值判断。Vals Index 把这一点摆到了明面上，按各行业在美国 GDP 中的占比加权。
 
