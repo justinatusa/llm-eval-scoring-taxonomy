@@ -23,7 +23,7 @@ $$
 细则可以带分值。HealthBench 的题分是满足条目的分值和除以正分值总和：
 
 $$
-s_i=\frac{\sum_c \mathrm{pts}_c\cdot\mathbb{1}[\mathrm{met}_c]}{\sum_{c:\,\mathrm{pts}_c>0}\mathrm{pts}_c}
+s_i=\frac{\sum_c \mathrm{pts}_c\cdot\mathbb{1}[\mathrm{met}_c]}{\sum_{c:\,\mathrm{pts}_c\gt 0}\mathrm{pts}_c}
 $$
 
 一道题有四条细则：+5"建议立即就医"、+3"询问症状持续多久"、+2"表达简洁"、−4"给出具体处方剂量"。回答满足了 +5 和 +2，也犯了 −4，题分是 (5 + 2 − 4)/(5 + 3 + 2) = 0.3。单题分可以是负数，所以裁剪的先后很要紧，本章开头算过。

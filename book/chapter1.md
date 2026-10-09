@@ -107,8 +107,8 @@ $$
 最基础的指标是困惑度和每字节比特数（BPB）。把一段标准文本喂给模型，看它对每个下一个词平均有多意外：
 
 $$
-\mathrm{NLL}=-\sum_{t=1}^{T}\ln p(x_t\mid x_{<t}),\qquad
-\text{困惑度}=\exp\!\Big(\frac{\mathrm{NLL}}{T}\Big),\qquad
+\mathrm{NLL}=-\sum_{t=1}^{T}\ln p(x_t\mid x_{\lt t}),\qquad
+\text{困惑度}=\exp\Big(\frac{\mathrm{NLL}}{T}\Big),\qquad
 \mathrm{BPB}=\frac{\mathrm{NLL}}{B\cdot\ln 2}
 $$
 
