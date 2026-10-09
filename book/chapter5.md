@@ -5,13 +5,13 @@
 Artificial Analysis 的智能指数是最常被引用的一个。当前版本有四大类十个组件：Agents 占 30%（AA-Briefcase 15%、GDPval-AA 10%、AutomationBench-AA 5%），编程占 20%（Terminal-Bench 4.0 和 SciCode 各 10%），通用占 30%（AA-Omniscience 15%、GDP.pdf 10%、AA-LCR 5%），科学推理占 20%（HLE 和 CritPt 各 10%）。指数就是加权和乘以 100：
 
 $$
-\text{Index}=100\times\sum_k w_k\,x_k,\qquad \sum_k w_k=1
+\text{Index}=100\times\sum_k w_k\ x_k,\qquad \sum_k w_k=1
 $$
 
 两个 Elo 类组件要先压到 0 到 1，用的是
 
 $$
-\mathrm{norm}(\text{Elo})=\mathrm{clamp}\Big(\frac{\text{Elo}-500}{2000},\,0,\,1\Big)
+\mathrm{norm}(\text{Elo})=\mathrm{clamp}\Big(\frac{\text{Elo}-500}{2000},\ 0,\ 1\Big)
 $$
 
 Elo 1100 对应 0.30，1600 对应 0.55，2600 以上一律是 1。一个虚构模型：Briefcase 1300（0.40）、GDPval-AA 1600（0.55），其余八项依次是 0.50、0.40、0.45、0.50、0.60、0.30、0.70、0.30、0.10，按权重加起来是 0.41，指数 41（`python3 scripts/basics.py` §10）。归一化区间决定了组件的实际分量：Elo 每涨 100 分，组件分只涨 0.05，在没碰到上下限时只给指数加 $5\times w$ 分，权重 15% 就是 0.75 分。3.8 节说过，这两项的 Elo 在模型进入指数时就冻结了。AA 明说权重偏向 agent 任务，指数的版本号一变，组件、判官、锚点都可能跟着变，跨版本不能比（[AA 方法页](https://artificialanalysis.ai/methodology/intelligence-benchmarking)）。

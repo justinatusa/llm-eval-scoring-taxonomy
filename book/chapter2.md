@@ -23,7 +23,7 @@ $$
 细则可以带分值。HealthBench 的题分是满足条目的分值和除以正分值总和：
 
 $$
-s_i=\frac{\sum_c \mathrm{pts}_c\cdot\mathbb{1}[\mathrm{met}_c]}{\sum_{c:\,\mathrm{pts}_c\gt 0}\mathrm{pts}_c}
+s_i=\frac{\sum_c \mathrm{pts}_c\cdot\mathbb{1}[\mathrm{met}_c]}{\sum_{c:\ \mathrm{pts}_c\gt 0}\mathrm{pts}_c}
 $$
 
 一道题有四条细则：+5"建议立即就医"、+3"询问症状持续多久"、+2"表达简洁"、−4"给出具体处方剂量"。回答满足了 +5 和 +2，也犯了 −4，题分是 (5 + 2 − 4)/(5 + 3 + 2) = 0.3。单题分可以是负数，所以裁剪的先后很要紧，本章开头算过。
@@ -148,15 +148,15 @@ $$
 SimpleQA 的判官给三档：对、错、未作答。全集上可以算三个数：
 
 $$
-\text{correct}=\frac{\#\text{对}}{N},\qquad
-\text{cga}=\frac{\#\text{对}}{\#\text{对}+\#\text{错}},\qquad
+\text{correct}=\frac{N_{\text{对}}}{N},\qquad
+\text{cga}=\frac{N_{\text{对}}}{N_{\text{对}}+N_{\text{错}}},\qquad
 F=\frac{2\cdot\text{correct}\cdot\text{cga}}{\text{correct}+\text{cga}}
 $$
 
 100 题里 40 对、20 错、40 没答，correct 是 0.40，cga 是 40/60 = 0.667，F 是 0.50。论文自己指出 F 分数有漏洞：表现低于一半时，只要有一半把握就该去猜（[SimpleQA](https://arxiv.org/abs/2411.04368)）。堵住漏洞的办法是答错扣分、不答零分。AA-Omniscience 就这样算：
 
 $$
-\text{OI}=100\cdot\frac{\#\text{对}-\#\text{错}}{N}
+\text{OI}=100\cdot\frac{N_{\text{对}}-N_{\text{错}}}{N}
 $$
 
 两个模型各答 100 题。M1 对 60、部分对 5、错 30、不答 5；M2 对 45、部分对 5、错 5、不答 45。按准确率 M1 领先（0.60 对 0.45），按 OI 是 M2 领先（40 对 30）。永远不答的模型 OI 是 0，全答错是 −100。AA 指数没有直接用 OI，而是拆成准确率和"1 − 幻觉率"两项，幻觉率的分母是没答对的题。所以准确率很高的模型幻觉率也可以很高，它不会的那几道全在硬猜（[AA-Omniscience](https://arxiv.org/abs/2511.13029)）。

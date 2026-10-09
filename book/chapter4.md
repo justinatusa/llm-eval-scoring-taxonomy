@@ -5,7 +5,7 @@
 Agent Arena 是目前最完整的尝试。它在真实的编程会话里随机分配编排模型，再从会话轨迹里挖出五个信号：用户确认任务完成、表扬和抱怨、工具调用的幻觉、bash 出错后的恢复等。每个信号单独估计"换成这个模型，比均匀分配时平均提升多少"。分配概率不均匀时，流量多的模型会主导平均值，所以用逆倾向权重纠正：
 
 $$
-\hat\mu_t=\frac{\sum_i w_iY_i\,\mathbb{1}[T_i=t]}{\sum_i w_i\,\mathbb{1}[T_i=t]},\qquad
+\hat\mu_t=\frac{\sum_i w_iY_i\ \mathbb{1}[T_i=t]}{\sum_i w_i\ \mathbb{1}[T_i=t]},\qquad
 w_i=\frac{q(T_i)}{p(T_i)},\qquad
 \hat\tau_t=\hat\mu_t-\hat\mu_Q
 $$
@@ -18,7 +18,7 @@ LMArena 10 月 8 日预览的 Alignment Index 也读真实会话，用一个按�
 
 $$
 s_k=1-\sqrt{\text{标记率}_k},\qquad
-\text{Index}=100\,(0.5\,s_{\text{越权}}+0.25\,s_{\text{归因}}+0.25\,s_{\text{谎报}})
+\text{Index}=100\ (0.5\ s_{\text{越权}}+0.25\ s_{\text{归因}}+0.25\ s_{\text{谎报}})
 $$
 
 开根号让接近完美的区间里的改进仍然看得见：标记率从 1% 降到 0%， $s$ 加 0.1；从 51% 降到 50%，只加约 0.007。三类标记率是 4%、1%、9% 时，指数是 100 × (0.4 + 0.225 + 0.175) = 80（[博客](https://arena.ai/blog/ai-alignment-index)）。
