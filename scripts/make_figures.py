@@ -47,45 +47,66 @@ def save(fig, name):
     print("images/" + name)
 
 
-# ---------- 1. 总图：三大类和小类 ----------
-def overview():
+# ---------- 1. 总图：四大类和小类 ----------
+def load_rows():
     with open(os.path.join(ROOT, "data", "benchmarks.csv"), encoding="utf-8-sig") as f:
-        rows = list(csv.DictReader(f))
+        return list(csv.DictReader(f))
+
+
+def overview():
+    rows = load_rows()
     total = len(rows)
     top = Counter(r["属于哪一类"].split("；")[0] for r in rows)
     sub = Counter(r["小类"] for r in rows)
     cols = [
-        ("1 单题直接出分", BLUE, ["1.1 程序对答案", "1.2 跑起来再判", "1.3 模型判答案对不对", "1.4 按细则逐条判", "1.5 基座模型：读概率和少样本"]),
-        ("2 多模型相互比较", ORANGE, ["人来投票", "模型当裁判", "对局规则判胜负", "各自打分后按名次比"]),
-        ("3 其他出分方式", GREEN, ["3.1 对照固定参考产出", "3.2 换算成人类的量", "3.3 没有满分的开放量", "3.4 真实使用数据", "3.5 跨 bench 合成指数", "3.6 评测判官本身"]),
+        ("单独给一个模型打分", BLUE, ["1.1 程序对答案", "1.2 跑起来再判", "1.3 模型判答案对不对", "1.4 按细则逐条判",
+                               "1.5 概率式评分", "1.6 换算成人类的量", "1.7 没有满分的开放量", "1.8 被评的是判官"]),
+        ("对照参考产出与相对比较", ORANGE, ["对照固定参考产出", "人来投票", "模型当裁判", "对局规则判胜负", "各自打分后按名次比"]),
+        ("真实使用数据", PURPLE, []),
+        ("跨 bench 合成指数", GREEN, []),
     ]
-    fig, ax = plt.subplots(figsize=(13, 8.6))
+    fig, ax = plt.subplots(figsize=(13, 9.6))
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
-    ax.text(0.5, 0.965, f"附录收录的 {total} 个 bench，按分数的来路分三大类", ha="center", va="center", fontsize=16, weight="bold")
+    ax.text(0.5, 0.975, f"附录收录的 {total} 个 bench，按分数的来路分四类", ha="center", va="center", fontsize=16, weight="bold")
     x = 0.04
     for name, color, _ in cols:
         w = 0.92 * top[name] / total
-        ax.add_patch(plt.Rectangle((x, 0.875), w, 0.045, fc=color, ec="white"))
+        ax.add_patch(plt.Rectangle((x, 0.895), w, 0.04, fc=color, ec="white"))
         if w > 0.08:
-            ax.text(x + w / 2, 0.8975, f"{name.split()[1]} {top[name] / total:.0%}", ha="center", va="center", color="white", fontsize=11, weight="bold")
+            ax.text(x + w / 2, 0.915, f"{name} {top[name] / total:.0%}", ha="center", va="center", color="white", fontsize=11, weight="bold")
         x += w
-    ax.text(0.96, 0.85, "条带宽度＝各大类所占比例", ha="right", va="center", fontsize=10, color=GREY)
-    xs = [0.04, 0.37, 0.70]
-    for (name, color, subs), x0 in zip(cols, xs):
+    ax.text(0.96, 0.873, "条带宽度＝各大类所占比例", ha="right", va="center", fontsize=10, color=GREY)
+    pos = [(0.04, 0.76), (0.37, 0.76), (0.70, 0.76), (0.70, 0.60)]
+    for (name, color, subs), (x0, y0) in zip(cols, pos):
         w = 0.28
-        box(ax, x0, 0.72, w, 0.09, f"{name}\n{top[name]} 个 · {top[name] / total:.1%}", color, fs=13, weight="bold",
-            fill=LIGHT[color])
-        h, gap = 0.072, 0.032
-        y = 0.67
-        ax.plot([x0 + 0.01, x0 + 0.01], [0.72, y - (len(subs) - 1) * (h + gap) - h / 2], color=color, lw=1.4)
+        box(ax, x0, y0, w, 0.08, f"{name}\n{top[name]} 个 · {top[name] / total:.1%}", color, fs=13, weight="bold", fill=LIGHT[color])
+        if not subs:
+            continue
+        h, gap = 0.06, 0.026
+        y = y0 - 0.045
+        ax.plot([x0 + 0.01, x0 + 0.01], [y0, y - (len(subs) - 1) * (h + gap) - h / 2], color=color, lw=1.4)
         for s in subs:
-            label = s.split(" ", 1)[1] if s[0].isdigit() else s
-            num = s.split(" ", 1)[0] + " " if s[0].isdigit() else ""
             n = sub[s]
             ax.plot([x0 + 0.01, x0 + 0.03], [y - h / 2, y - h / 2], color=color, lw=1.4)
-            box(ax, x0 + 0.03, y - h, w - 0.03, h, f"{num}{label}\n{n} 个 · {n / total:.1%}", color, fs=11, fill="white")
+            box(ax, x0 + 0.03, y - h, w - 0.03, h, f"{s}\n{n} 个 · {n / total:.1%}", color, fs=10.5, fill="white")
             y -= h + gap
     save(fig, "overview.png")
+
+
+def years():
+    rows = load_rows()
+    c = Counter(r["发布时间"][:4] for r in rows if r["发布时间"][:4].isdigit())
+    ys = sorted(c)
+    fig, ax = plt.subplots(figsize=(8, 3.6))
+    bars = ax.bar(ys, [c[y] for y in ys], color=BLUE, width=0.6)
+    for b, y in zip(bars, ys):
+        ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 1.5, str(c[y]), ha="center", fontsize=11)
+    ax.set_ylabel("bench 数")
+    ax.set_title("附录 bench 的发布年份", fontsize=13)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    ax.set_ylim(0, max(c.values()) * 1.15)
+    save(fig, "years.png")
 
 
 # ---------- 2. 一道题到一个分数 ----------
@@ -111,27 +132,32 @@ def pipeline():
     save(fig, "pipeline.png")
 
 
-# ---------- 3. 第 1 类五个小类的判分示意 ----------
+# ---------- 3. 单独打分类八个小类的判分示意 ----------
 def class1():
-    rows = [
-        ("1.1 程序对答案 · 60 个", ["模型回答", "抽出最终答案", "和标准答案比", "对 1 / 错 0"]),
-        ("1.2 跑起来再判 · 56 个", ["补丁或操作", "沙箱里运行", "测试、终态检查", "全过才算对"]),
-        ("1.3 模型判答案对不对 · 26 个", ["模型回答", "判官读回答\n和标准答案", "是否一回事", "对 1 / 错 0"]),
-        ("1.4 按细则逐条判 · 36 个", ["模型交付物", "判官逐条打勾", "每条过或不过\n可带正负分值", "全过或比例"]),
-        ("1.5 基座模型：读概率 · 3 个", ["标准文本或选项", "不生成，读概率", "比较选项概率\n或算每字节比特", "准确率、BPB"]),
+    sub = Counter(r["小类"] for r in load_rows())
+    spec = [
+        ("1.1 程序对答案", ["模型回答", "抽出最终答案", "和标准答案比", "对 1 / 错 0"]),
+        ("1.2 跑起来再判", ["补丁或操作", "沙箱里运行", "测试、终态检查", "全过才算对"]),
+        ("1.3 模型判答案对不对", ["模型回答", "判官读回答\n和标准答案", "是否一回事", "对 1 / 错 0"]),
+        ("1.4 按细则逐条判", ["模型交付物", "判官逐条打勾", "每条过或不过\n可带正负分值", "细则分"]),
+        ("1.5 概率式评分", ["标准文本或选项", "不生成，读概率", "比较选项概率\n或算每字节比特", "准确率、BPB"]),
+        ("1.6 换算成人类的量", ["任务成败", "对照人类耗时\n或人类成绩", "拟合或换算", "人类小时数\n或 rating"]),
+        ("1.7 没有满分的开放量", ["经营或优化任务", "一直运行到结束", "记录最终结果", "余额、加速比"]),
+        ("1.8 被评的是判官", ["判官的判定", "和人工标注\n或已知对错比", "判得对不对", "准确率、F1"]),
     ]
-    fig, ax = plt.subplots(figsize=(13, 7))
+    fig, ax = plt.subplots(figsize=(13, 10.5))
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
-    hh = 0.15
-    for i, (title, steps) in enumerate(rows):
-        y = 0.83 - i * 0.195
-        ax.text(0.0, y + hh / 2, title, ha="left", va="center", fontsize=12.5, weight="bold", color=BLUE)
+    hh, step = 0.095, 0.124
+    for i, (name, steps) in enumerate(spec):
+        y = 0.89 - i * step
+        ax.text(0.0, y + hh / 2, f"{name} · {sub[name]} 个", ha="left", va="center", fontsize=12.5, weight="bold", color=BLUE)
         x0, w, gap = 0.30, 0.155, 0.022
         for j, s in enumerate(steps):
             x = x0 + j * (w + gap)
             box(ax, x, y, w, hh, s, BLUE if j < 3 else GREEN, fs=10.5, fill="white" if j < 3 else LIGHT[GREEN])
             if j < 3:
                 arrow(ax, x + w + 0.002, y + hh / 2, x + w + gap - 0.002, y + hh / 2)
+    ax.plot([0, 1], [0.89 - 5 * step + hh + 0.0145] * 2, color=GREY, lw=0.8, ls="--")
     save(fig, "class1-subclasses.png")
 
 
@@ -298,4 +324,4 @@ def judge_merge():
 
 
 if __name__ == "__main__":
-    overview(); pipeline(); class1(); sampling(); elo_order(); new_model(); three_champions(); judge_merge()
+    overview(); years(); pipeline(); class1(); sampling(); elo_order(); new_model(); three_champions(); judge_merge()

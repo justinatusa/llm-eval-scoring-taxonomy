@@ -4,7 +4,7 @@
 """
 import csv
 import os
-from collections import OrderedDict
+from collections import Counter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(ROOT, "data", "benchmarks.csv")
@@ -38,11 +38,19 @@ def how_merged(r):
 
 
 CLASSES = [
-    ("1 单题直接出分", ["1.1 程序对答案", "1.2 跑起来再判", "1.3 模型判答案对不对", "1.4 按细则逐条判", "1.5 基座模型：读概率和少样本"]),
-    ("2 多模型相互比较", ["人来投票", "模型当裁判", "对局规则判胜负", "各自打分后按名次比"]),
-    ("3 其他出分方式", ["3.1 对照固定参考产出", "3.2 换算成人类的量", "3.3 没有满分的开放量", "3.4 真实使用数据", "3.5 跨 bench 合成指数", "3.6 评测判官本身"]),
+    ("单独给一个模型打分", "chapter1.md", ["1.1 程序对答案", "1.2 跑起来再判", "1.3 模型判答案对不对", "1.4 按细则逐条判",
+                                     "1.5 概率式评分", "1.6 换算成人类的量", "1.7 没有满分的开放量", "1.8 被评的是判官"]),
+    ("对照参考产出与相对比较", "chapter3.md", ["对照固定参考产出", "人来投票", "模型当裁判", "对局规则判胜负", "各自打分后按名次比"]),
+    ("真实使用数据", "chapter4.md", ["真实使用数据"]),
+    ("跨 bench 合成指数", "chapter5.md", ["跨 bench 合成指数"]),
 ]
-CHAPTER = {"1": "chapter1.md", "2": "chapter2.md", "3": "chapter3.md"}
+SOURCES = (
+    "这些 bench 有两个来路。一是 2026 年各家的模型卡和发布页：OpenAI 的 GPT-6 Astra 和 GPT-6.1 Sol，"
+    "Anthropic 的 Claude Opus 5 和 Opus 5.5，Google DeepMind 的 Gemini 4 Argon 和 Gemini 3.8 Flash，xAI 的 Grok 4.7，"
+    "Meta 的 Muse Spark 1.3，以及 DeepSeek-V4、Qwen3.8、Kimi K3、GLM-5.3、Seed 2.1、MiniMax-M3、Step 3.7 Flash 和混元 Hy3。"
+    "二是第三方榜单：Artificial Analysis、Vals、Scale SEAL、LMArena、Epoch、MathArena、LiveBench 等。"
+    "两边合并、去重，再按领域补齐缺口。每个 bench 的计分方法都对照过它的原始论文、方法页或代码。"
+)
 
 
 def main():
@@ -52,11 +60,13 @@ def main():
     by_sub = {}
     for r in rows:
         by_sub.setdefault(r["小类"], []).append(r)
-    known = {s for _, subs in CLASSES for s in subs}
+    known = {s for _, _, subs in CLASSES for s in subs}
     unknown = set(by_sub) - known
     if unknown:
         raise SystemExit(f"未知小类：{unknown}")
     dom_rank = {d: i for i, d in enumerate(ORDER)}
+    years = Counter(r["发布时间"][:4] for r in rows if r["发布时间"][:4].isdigit())
+    top3 = "，".join(f"{y} 年的 {years[y]} 个" for y in sorted(years, reverse=True)[:3])
 
     def anchor(i, j):
         return f"c{i + 1}-{j + 1}"
@@ -64,36 +74,43 @@ def main():
     lines = [
         "# 附录 书中涉及的 bench",
         "",
-        f"这里列出 {total} 个 bench，按正文的三大类和小类分组，同一小类里按领域排列。"
-        "“怎么判”写谁来判、拿什么作对照；“怎么合成总分”依次写一道题内、多次采样和整套题三步，"
-        "没有特别处理的步骤略去。少数 bench 同时用了两种出分方式，按主要的一种归类，名称后面注明另一种。"
+        SOURCES + f"按发布年份，{top3}：",
+        "",
+        "![附录 bench 的发布年份分布](../images/years.png)",
+        "",
+        f"下面按正文的四类和小类分组列出这 {total} 个 bench，同一小类里按领域排列。"
+        "“怎么判”写谁来判、拿什么作对照，程序和模型一起判的按最终对错由谁定归类，并在这一栏末尾注明；"
+        "“怎么合成总分”依次写一道题内、多次采样和整套题三步，没有特别处理的步骤略去。"
+        "少数 bench 同时属于两类，按主要的一类归入，名称后面注明另一类。"
         "更完整的字段在 [data/benchmarks.csv](../data/benchmarks.csv)。",
         "",
         "| 大类 | 小类 | 数量 | 占比 |",
         "|---|---|---|---|",
     ]
-    for i, (cls, subs) in enumerate(CLASSES):
+    for i, (cls, _, subs) in enumerate(CLASSES):
         n_cls = sum(len(by_sub.get(s, [])) for s in subs)
         for j, s in enumerate(subs):
             n = len(by_sub.get(s, []))
-            lines.append(f"| {cls if j == 0 else ''}{f'（{n_cls} 个）' if j == 0 else ''} | [{s}](#{anchor(i, j)}) | {n} | {n / total:.1%} |")
+            label = f"{cls}（{n_cls} 个）" if j == 0 else ""
+            sub = "—" if len(subs) == 1 else f"[{s}](#{anchor(i, j)})"
+            lines.append(f"| {label} | {sub} | {n} | {n / total:.1%} |")
     lines.append("")
-    for i, (cls, subs) in enumerate(CLASSES):
+    for i, (cls, chap, subs) in enumerate(CLASSES):
         n_cls = sum(len(by_sub.get(s, [])) for s in subs)
-        num, name = cls.split(" ", 1)
-        lines += [f"## 第 {num} 类 {name}（{n_cls} 个）", "",
-                  f"正文见[第 {num} 章]({CHAPTER[num]})。", ""]
+        lines += [f'<a id="c{i + 1}"></a>', "", f"## {cls}（{n_cls} 个）", "",
+                  f"正文见[第 {chap[7:-3]} 章]({chap})。", ""]
         for j, s in enumerate(subs):
             rs = sorted(by_sub.get(s, []), key=lambda r: (dom_rank.get(r["领域大类"], 99), r["名称"]))
-            lines += [f'<a id="{anchor(i, j)}"></a>', "", f"### {s}（{len(rs)} 个）", "",
-                      "| 名称 | 领域 | 怎么判 | 怎么合成总分 |", "|---|---|---|---|"]
+            if len(subs) > 1:
+                lines += [f'<a id="{anchor(i, j)}"></a>', "", f"### {s}（{len(rs)} 个）", ""]
+            lines += ["| 名称 | 领域 | 怎么判 | 怎么合成总分 |", "|---|---|---|---|"]
             for r in rs:
                 name_cell = cell(r["名称"])
                 if r["来源"].strip():
                     name_cell = f"[{name_cell}]({r['来源'].strip()})"
                 parts = r["属于哪一类"].split("；")
                 if len(parts) > 1:
-                    name_cell += f"（也用到{parts[1].split(' ', 1)[1]}）"
+                    name_cell += f"（也属于{parts[1]}）"
                 lines.append(f"| {name_cell} | {cell(r['领域'])} | {cell(how_judged(r))} | {cell(how_merged(r))} |")
             lines.append("")
     with open(OUT_PATH, "w", encoding="utf-8") as f:
