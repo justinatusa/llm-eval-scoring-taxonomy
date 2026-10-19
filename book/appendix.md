@@ -4,7 +4,7 @@
 
 ![附录 bench 的发布年份分布](../images/years.png)
 
-下面按正文的四类和小类分组列出这 227 个 bench，同一小类里按领域排列。“怎么判”写谁来判、拿什么作对照，程序和模型一起判的按最终对错由谁定归类，并在这一栏末尾注明；“怎么合成总分”依次写一道题内、多次采样和整套题三步，没有特别处理的步骤略去。少数 bench 同时属于两类，按主要的一类归入，名称后面注明另一类。更完整的字段在 [data/benchmarks.csv](../data/benchmarks.csv)。
+下面按正文的四类和小类分组列出这 227 个 bench，同一小类里按领域排列。"怎么判"写谁来判、拿什么作对照，程序和模型一起判的按最终对错由谁定归类，并在这一栏末尾注明；"怎么合成总分"依次写一道题内、多次采样和整套题三步，没有特别处理的步骤略去。少数 bench 同时属于两类，按主要的一类归入，名称后面注明另一类。更完整的字段在 [data/benchmarks.csv](../data/benchmarks.csv)。
 
 | 大类 | 小类 | 数量 | 占比 |
 |---|---|---|---|
@@ -221,15 +221,15 @@
 | [Humanity's Sixth Sense（HSS）](https://labs.scale.com/papers/humanitys-sixth-sense) | 多模态感知（图像/视频） | LLM（Claude Opus 5）逐条判；对照标准细则 | 逐条；3 次平均 pass@1；题均，95% 区间（按题 bootstrap） |
 | [Audio MultiChallenge](https://scale.com/leaderboard/audiomc) | 语音对话 | LLM（o4-mini，κ≈.87）判最后一轮原子细则；对照题专属细则 | 全部细则过；通过率（文本/语音输出两模式） |
 | [GDP.pdf](https://artificialanalysis.ai/methodology/intelligence-benchmarking) | 文档交付物 | LLM 逐条判 1,275 条原子标准；AA 版单判官 GPT-5.6 Luna (medium)，Surge 版 Gemini 3.5 Flash；对照细则 | 头条全过；次指标逐条比例；5 次；All-pass 题均 |
-| [Harvey LAB / LAB-AA](https://artificialanalysis.ai/methodology/intelligence-benchmarking) | 法律代理 | LAB-AA：3 个 LLM 判官（GPT-6 Sol、Grok 4.7、Claude Opus 5.5，均 medium）逐条判；Harvey 原版单判官；对照专家细则 | 每条细则记判官通过占比（0、⅓、⅔、1）；题分 = 判“全部细则通过”的判官占比；有实质幻觉记 0；头条 Hallucination-Gated All-Pass 对任务宏平均；Criterion Pass Rate 对全部细则微平均 |
-| [HealthBench / Professional / Hard](https://arxiv.org/abs/2505.08775) | 医疗 | LLM 逐条判医生细则（含负分条目）；对照医生细则 | 满足分值和 ÷ 正分总和；单次；另报 worst@k；先平均，再裁到 [0,1]；Professional 加长度校正 |
+| [Harvey LAB / LAB-AA](https://artificialanalysis.ai/methodology/intelligence-benchmarking) | 法律代理 | LAB-AA：3 个 LLM 判官（GPT-6 Sol、Grok 4.7、Claude Opus 5.5，均 medium）逐条判；Harvey 原版单判官；对照专家细则 | 每条细则记判官通过占比（0、⅓、⅔、1）；题分 = 判全部细则通过的判官占比；有实质幻觉记 0；头条 Hallucination-Gated All-Pass 对任务宏平均；Criterion Pass Rate 对全部细则微平均 |
+| [HealthBench / Professional / Hard](https://arxiv.org/abs/2505.08775) | 医疗 | LLM 逐条判医生细则（含负分条目）；对照医生细则 | 满足分值和 ÷ 正分总和；HealthBench 单次、另报 worst@k；Professional 每题 8 次取平均；先平均，再裁到 [0,1]；Professional 加长度校正 |
 | [Legal Research Bench](https://www.vals.ai/benchmarks/legal_research) | 法律检索 | LLM 单判官（GPT-5.4）逐条判；对照法律专家细则（每题 1–22 项） | all-pass（主）vs 加权通过率；题均 |
 | [MedScribe（Vals）](https://www.vals.ai/benchmarks/medscribe) | 医疗文书 | LLM 按专家细则判 SOAP 病历；对照专家细则 | 细则比例；准确率 |
 | [PRBench（Finance / Legal；SEAL 页面名 Professional Reasoning）](https://scale.com/leaderboard/prbench-legal) | 金融/法律推理 | LLM（o4-mini）判 10–30 条细则，权重 −10 到 +10；对照专家细则 | 加权分裁到 0–1；题均 |
 | [Public Benefits Bench v1.1（SNAP）](https://www.vals.ai/benchmarks/public-benefits-bench) | 公共服务问答 | LLM 按专家细则判；对照专家细则 | 通过 / 不通过；通过率（四种工具条件） |
 | [Tax Agent Bench](https://www.vals.ai/benchmarks/tax_agent_bench) | 税务代理 | LLM 判 3–89 条加权（1–3）检查；对照专家细则 | 全过才得 1，再乘引用质量（真实来源占比）；题均 |
 | [TutorBench](https://scale.com/leaderboard/tutorbench) | 教学辅导 | LLM（Claude 4 Sonnet）判 3–39 条加权通过/不通过；对照专家细则 | 加权得分；题均 |
-| [Vals Finance Agent v2（FAB v2）](https://www.vals.ai/benchmarks/fabv2) | 金融代理 | LLM 判最终答案（判官跑 3 次取众数）；对照专家细则 | partial credit vs all-pass 两口径；题均 |
+| [Vals Finance Agent v2（FAB v2）](https://www.vals.ai/benchmarks/fabv2) | 金融代理 | 3 个 LLM 判官组成评审团（GPT-5.4、Gemini-3.1-Pro、Claude Sonnet 4.6）逐项判；v1.1 是 GPT-5.2 判 3 次取众数；对照专家细则 | 检查项加权，一票否决项不过记 0；partial credit（头条）vs all-pass 两口径；题均 |
 | [MentalHealthBench（OpenAI）](https://openai.com/index/introducing-mentalhealthbench/) | 心理健康对话 | LLM（GPT-5.6 Sol）逐条二元判 5,262 条临床细则，权重 −10 到 +10；对照临床细则 | 加权得分；题均 |
 | [WritingBench](https://arxiv.org/abs/2503.05244) | 写作 | 7B 评分模型按 5 条题专属标准打 1–10；对照题专属标准 | 5 条平均；均分 |
 | [FORTRESS](https://scale.com/leaderboard/fortress) | 安全（对抗提示） | 3 个 LLM 判官（o3、Claude 3.7、Gemini 2.5 Pro）多数票判 4–7 个二元问题；拒答检查器 gpt-4o-mini；对照每题专属风险问题；配对良性提示 | ARS：判"是"的比例；ORS：良性提示被拒比例；题均；按 ARS 排名 |
@@ -332,7 +332,7 @@
 
 | 名称 | 领域 | 怎么判 | 怎么合成总分 |
 |---|---|---|---|
-| [Kaggle Game Arena（国际象棋/扑克/狼人杀/统一榜）](https://www.kaggle.com/benchmarks/kaggle/game-arena) | 博弈 | 规则：对局结算；对照同池其他模型 | 胜/平/负；扑克 BB/100；狼人杀角色贡献；自适应排期；各游戏等权，统一 BT |
+| [Kaggle Game Arena（国际象棋/四子棋/扑克/狼人杀/统一榜）](https://www.kaggle.com/benchmarks/kaggle/game-arena) | 博弈 | 规则：对局结算；对照同池其他模型 | 胜/平/负；扑克 BB/100；狼人杀角色贡献；自适应排期；各游戏等权，统一 BT |
 | [Poker Agent（Vals）](https://www.vals.ai/benchmarks/poker_agent) | 博弈 | 规则：牌局结算；对照同桌其他模型 | 筹码；多场 10 人锦标赛；TrueSkill，1000 基线归一（×40） |
 
 <a id="c2-5"></a>
@@ -341,7 +341,7 @@
 
 | 名称 | 领域 | 怎么判 | 怎么合成总分 |
 |---|---|---|---|
-| [FrontierSWE v1 / v2](https://www.frontierswe.com/)（也属于单独给一个模型打分） | 长程工程优化 | 规则：每题 0–1 连续分；作弊记 0；对照v1：同场其他模型（名次）；v2：绝对分 | 连续分；v2 mean@5，另显 worst@5–best@5；v1 支配分 = (N − 平均名次)/(N − 1)；v2 34 题 mean@5 |
+| [FrontierSWE v1 / v2](https://www.frontierswe.com/)（也属于单独给一个模型打分） | 长程工程优化 | 规则：v1 各题报原生指标（如加速比）；v2 每题归一到 0–1；作弊记 0；对照v1：同场其他模型（名次）；v2：绝对分 | 连续分；v2 mean@5，另显 worst@5–best@5；v1 支配分 = (N − 平均名次)/(N − 1)；v2 34 题 mean@5 |
 
 <a id="c3"></a>
 

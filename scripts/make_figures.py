@@ -100,12 +100,14 @@ def overview():
 
 def years():
     rows = load_rows()
-    c = Counter(r["发布时间"][:4] for r in rows if r["发布时间"][:4].isdigit())
-    ys = sorted(c)
+    c = Counter(int(r["发布时间"][:4]) for r in rows if r["发布时间"][:4].isdigit())
+    ys = list(range(min(c), max(c) + 1))
     fig, ax = plt.subplots(figsize=(8, 3.6))
     bars = ax.bar(ys, [c[y] for y in ys], color=BLUE, width=0.6)
     for b, y in zip(bars, ys):
         ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 1.5, str(c[y]), ha="center", fontsize=11)
+    ax.set_xticks(ys)
+    ax.set_xticklabels([f"{y}\n（截至 10 月）" if y == 2026 else str(y) for y in ys])
     ax.set_ylabel("bench 数")
     ax.set_title("附录 bench 的发布年份", fontsize=13)
     for side in ("top", "right"):
@@ -117,21 +119,22 @@ def years():
 # ---------- 2. 一道题到一个分数 ----------
 def pipeline():
     steps = [
-        ("模型输出", "一段回答、一份补丁\n或一串操作", GREY),
-        ("判一道题", "程序对答案、跑测试\n模型判官、两两比较", BLUE),
-        ("合并多条判定", "多条细则、多个判官\n门控和阈值", BLUE),
-        ("合并多次采样", "平均、至少对一次\n每次都对", PURPLE),
-        ("整套题合成总分", "平均、拟合对局\n换算成人类的量", GREEN),
-        ("跨 bench 合成", "加权指数\n联合拟合", GREEN),
+        ("模型输出", "一段回答、一份补丁\n或一串操作", GREY, "跑法：6.1 节"),
+        ("判一道题", "程序对答案、跑测试\n模型判官、两两比较", BLUE, "第 1、3 章"),
+        ("合并多条判定", "多条细则、多个判官\n门控和阈值", BLUE, "2.1、2.2 节"),
+        ("合并多次采样", "平均、至少对一次\n每次都对", PURPLE, "2.3 节"),
+        ("整套题合成总分", "平均、拟合对局\n换算成人类的量", GREEN, "2.4 节、第 3 章"),
+        ("跨 bench 合成", "加权指数\n联合拟合", GREEN, "第 5 章"),
     ]
     fig, ax = plt.subplots(figsize=(14, 4.6))
-    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
-    w, gap = 0.145, 0.025
-    by = 0.36
-    for i, (t, d, c) in enumerate(steps):
+    ax.set_xlim(0, 1); ax.set_ylim(-0.05, 1); ax.axis("off")
+    w, gap = 0.14, 0.024
+    by = 0.38
+    for i, (t, d, c, ch) in enumerate(steps):
         x = 0.01 + i * (w + gap)
         box(ax, x, by, w, 0.2, t, c, fs=13, weight="bold")
         ax.text(x + w / 2, by - 0.12, d, ha="center", va="center", fontsize=10.5, color="#444444", linespacing=1.5)
+        ax.text(x + w / 2, by - 0.25, ch, ha="center", va="center", fontsize=10, color=c if c != GREY else "#666666")
         if i < len(steps) - 1:
             arrow(ax, x + w + 0.002, by + 0.1, x + w + gap - 0.002, by + 0.1)
     # 另一条路：先对答案投票或挑一个，再判
@@ -141,7 +144,7 @@ def pipeline():
     arrow(ax, x0 + w * 0.5, by + 0.2, bx + 0.01, 0.74)
     arrow(ax, bx + bw - 0.01, 0.74, x1 + w * 0.5, by + 0.2)
     ax.text(bx + bw + 0.025, 0.82, "另一条路：先合答案，再判", ha="left", va="center", fontsize=10.5, color=PURPLE)
-    ax.text(0.5, 0.02, "每一步都有几种做法，选哪一种都会改变最后的数字", ha="center", fontsize=11, color=GREY)
+    ax.text(0.5, -0.02, "每一步都有几种做法，选哪一种都会改变最后的数字", ha="center", fontsize=11, color=GREY)
     save(fig, "pipeline.png")
 
 
@@ -155,7 +158,7 @@ def class1():
         ("1.4 按细则逐条判", ["模型交付物", "判官逐条打勾", "每条过或不过\n可带正负分值", "细则分"]),
         ("1.5 概率式评分", ["标准文本或选项", "不生成，读概率", "比较选项概率\n或算每字节比特", "准确率、BPB"]),
         ("1.6 换算成人类的量", ["任务成败", "对照人类耗时\n或人类成绩", "拟合或换算", "人类小时数\n或 rating"]),
-        ("1.7 没有满分的开放量", ["经营或优化任务", "一直运行到结束", "记录最终结果", "余额、加速比"]),
+        ("1.7 没有满分的开放量", ["经营或优化任务", "一直运行到结束", "记录最终结果", "余额、偏好分"]),
         ("1.8 被评的是判官", ["判官的判定", "和人工标注\n或已知对错比", "判得对不对", "准确率、F1"]),
     ]
     fig, ax = plt.subplots(figsize=(13, 10.5))
@@ -207,7 +210,7 @@ def sampling():
     ax.set_xticks(ks); ax.set_ylim(-0.03, 1.05)
     ax.set_title("同一道题，采样 10 次对 3 次", fontsize=13)
     ax.grid(alpha=0.25)
-    ax.legend(loc="center right", fontsize=10, frameon=False)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.13), ncol=3, fontsize=10, frameon=False)
     save(fig, "sampling-curves.png")
 
 
@@ -256,7 +259,7 @@ def elo_order():
     ax.axhline(a_bt, color=GREEN, ls="--", lw=2, label=f"一次性拟合（BT）：{a_bt:.0f}，与顺序无关")
     ax.set_xlabel("已经打完的场数"); ax.set_ylabel("A 的分数（三人平均为 1000）")
     ax.set_title("同样 30 场对局，换个顺序，在线 Elo 给 A 的分就不同", fontsize=13)
-    ax.grid(alpha=0.25); ax.legend(fontsize=10, frameon=False, loc="lower right")
+    ax.grid(alpha=0.25); ax.legend(fontsize=10, frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=2)
     save(fig, "elo-order.png")
 
 
@@ -281,29 +284,38 @@ def new_model():
 
 # ---------- 7. 三种跨 bench 合并，三个冠军 ----------
 def three_champions():
+    def stats(data):
+        ms = list(data)
+        nb = len(next(iter(data.values())))
+        avg = {m: sum(v) / nb for m, v in data.items()}
+        rank = {m: sum(1 + sum(data[o][b] > data[m][b] for o in ms if o != m) for b in range(nb)) / nb for m in ms}
+        win = {m: sum((data[m][b] > data[o][b]) + 0.5 * (data[m][b] == data[o][b]) for b in range(nb) for o in ms if o != m)
+               / (nb * (len(ms) - 1)) for m in ms}
+        return avg, rank, win
+
     data = {"X": (90, 50, 52), "Y": (60, 60, 60), "Z": (59, 61, 61)}
-    ms = list(data)
-    avg = {m: sum(v) / 3 for m, v in data.items()}
-    ranks = {m: [] for m in ms}
-    wins = {m: 0.0 for m in ms}
-    for b in range(3):
-        for m in ms:
-            ranks[m].append(1 + sum(data[o][b] > data[m][b] for o in ms if o != m))
-            wins[m] += sum((data[m][b] > data[o][b]) + 0.5 * (data[m][b] == data[o][b]) for o in ms if o != m)
-    avg_rank = {m: sum(r) / 3 for m, r in ranks.items()}
-    win = {m: wins[m] / (3 * 2) for m in ms}
-    colors = {"X": BLUE, "Y": GREY, "Z": ORANGE}
-    fig, axes = plt.subplots(1, 3, figsize=(12, 4.4))
-    panels = [("平均分（越高越好）", avg, max, "{:.1f}"), ("平均名次（越小越好）", avg_rank, min, "{:.2f}"), ("平均胜率（越高越好）", win, max, "{:.3f}")]
-    for ax, (title, vals, best, f) in zip(axes, panels):
+    avg, rank, win = stats(data)
+    _, _, win_w = stats({**data, "W": (58, 62, 62)})
+    colors = {"X": BLUE, "Y": GREY, "Z": ORANGE, "W": PURPLE}
+    fig, axes = plt.subplots(1, 4, figsize=(15, 4.6))
+    panels = [("平均分", "越高越好", avg, max, "{:.1f}"), ("平均名次", "越小越好", rank, min, "{:.2f}"),
+              ("平均胜率", "越高越好", win, max, "{:.3f}"), ("加入 W (58, 62, 62) 后\n的平均胜率", "越高越好", win_w, max, "{:.3f}")]
+    for ax, (title, note, vals, best, f) in zip(axes, panels):
+        ms = list(vals)
         champ = best(vals, key=vals.get)
-        bars = ax.bar(ms, [vals[m] for m in ms], color=[colors[m] for m in ms], alpha=0.85)
+        bars = ax.bar(ms, [vals[m] for m in ms], color=[colors[m] for m in ms],
+                      alpha=1, edgecolor=["black" if m == champ else "none" for m in ms], linewidth=1.6)
         for bar, m in zip(bars, ms):
-            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), f.format(vals[m]), ha="center", va="bottom", fontsize=11)
-        ax.set_title(f"{title}\n冠军：{champ}", fontsize=12)
+            if m != champ:
+                bar.set_alpha(0.35)
+            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), ("★ " if m == champ else "") + f.format(vals[m]),
+                    ha="center", va="bottom", fontsize=11, weight="bold" if m == champ else "normal")
+        ax.set_title(f"{title}（{note}）\n冠军：{champ}", fontsize=12)
         ax.set_yticks([]); [ax.spines[s].set_visible(False) for s in ("left", "right", "top")]
         ax.set_ylim(0, max(vals.values()) * 1.2)
-    fig.suptitle("同一份三个 bench 的成绩：X (90, 50, 52)  Y (60, 60, 60)  Z (59, 61, 61)", fontsize=12, y=1.04)
+    axes[3].axvspan(-0.5, 3.5, color=PURPLE, alpha=0.04, zorder=-1)
+    fig.suptitle("同一份三个 bench 的成绩：X (90, 50, 52)  Y (60, 60, 60)  Z (59, 61, 61)", fontsize=12, y=1.13)
+    fig.text(0.5, -0.03, "平均名次的柱子越短越好；★ 标的是各自口径下的冠军", ha="center", fontsize=10, color=GREY)
     save(fig, "three-champions.png")
 
 
@@ -331,10 +343,107 @@ def judge_merge():
     ax2.set_title("这道题的分", fontsize=12)
     for k, (r, v) in enumerate(rules):
         y = 0.86 - k * 0.19
-        box(ax2, 0.0, y - 0.07, 0.66, 0.14, r, PURPLE, fs=11, fill="white")
-        ax2.text(0.70, y, v, ha="left", va="center", fontsize=15, weight="bold", color=PURPLE)
+        box(ax2, 0.0, y - 0.07, 0.58, 0.14, r, PURPLE, fs=11, fill="white")
+        ax2.text(0.62, y, v, ha="left", va="center", fontsize=15, weight="bold", color=PURPLE)
     save(fig, "judge-merge.png")
+
+
+# ---------- 9. METR：成功率对人类耗时的逻辑回归 ----------
+def metr_fit():
+    mins = [1, 2, 4, 8, 15, 30, 60, 120, 240, 480]
+    succ = [1, 1, 1, .9, .8, .6, .5, .3, .1, 0]
+    # 带权逻辑回归 logit p = c0 + c1·log2 t，和 scripts/basics.py §9 一致
+    c0 = c1 = 0.0
+    for _ in range(100):
+        g0 = g1 = h00 = h01 = h11 = 0.0
+        for t, p in zip(mins, succ):
+            x = math.log2(t); q = sig(c0 + c1 * x)
+            g0 += p - q; g1 += (p - q) * x
+            v = q * (1 - q); h00 += v; h01 += v * x; h11 += v * x * x
+        det = h00 * h11 - h01 * h01
+        c0 += (h11 * g0 - h01 * g1) / det; c1 += (h00 * g1 - h01 * g0) / det
+    beta = -c1; l50 = c0 / beta; l80 = l50 - math.log(4) / beta
+    fig, ax = plt.subplots(figsize=(9, 5))
+    xs = [i / 20 for i in range(-10, 200)]
+    ax.plot([2 ** x for x in xs], [sig(c0 + c1 * x) for x in xs], color=BLUE, lw=2.2, label="拟合的逻辑曲线")
+    ax.plot(mins, succ, "o", color=ORANGE, ms=8, label="各任务组的实际成功率")
+    for lv, pr, col, name in ((l50, 0.5, GREEN, "h50"), (l80, 0.8, RED, "h80")):
+        h = 2 ** lv
+        ax.plot([h, h], [0, pr], ls="--", color=col, lw=1.4); ax.plot([0.5, h], [pr, pr], ls="--", color=col, lw=1.4)
+        left = name == "h80"
+        ax.text(h / 1.08 if left else h * 1.08, 0.03, f"{name} ≈ {h:.1f} 分钟", color=col, fontsize=11, weight="bold",
+                ha="right" if left else "left")
+    ax.set_xscale("log", base=2)
+    ax.set_xticks(mins); ax.set_xticklabels(["1 分", "2 分", "4 分", "8 分", "15 分", "30 分", "1 时", "2 时", "4 时", "8 时"])
+    ax.set_xlim(0.7, 700); ax.set_ylim(-0.03, 1.05)
+    ax.set_xlabel("人类专家完成任务的耗时（对数刻度）"); ax.set_ylabel("模型成功率")
+    ax.set_title("50% 跨度约 50 分钟，80% 跨度只有约 18 分钟", fontsize=13)
+    ax.grid(alpha=0.25); ax.legend(frameon=False, fontsize=10, loc="upper right")
+    save(fig, "metr-fit.png")
+
+
+# ---------- 10. 误差条宽度随题量变化 ----------
+def ci_width():
+    ns = list(range(10, 1001, 5))
+    fig, ax = plt.subplots(figsize=(9, 5))
+    for p, col in ((0.5, BLUE), (0.7, ORANGE), (0.9, GREEN)):
+        ax.plot(ns, [100 * 1.96 * math.sqrt(p * (1 - p) / n) for n in ns], color=col, lw=2.2, label=f"准确率 {p:.1f}")
+    for n, lab in ((30, "AIME 一年 30 题"), (200, "200 题"), (500, "500 题")):
+        hw = 100 * 1.96 * math.sqrt(0.21 / n)
+        ax.plot([n], [hw], "o", color=ORANGE, ms=7)
+        ax.annotate(f"{lab}：±{hw:.1f}", (n, hw), xytext=(12, 10), textcoords="offset points", fontsize=10.5, color="#444444")
+    ax.set_xscale("log")
+    ax.set_xticks([10, 30, 100, 200, 500, 1000]); ax.set_xticklabels(["10", "30", "100", "200", "500", "1000"])
+    ax.set_xlabel("题量 n（对数刻度）"); ax.set_ylabel("95% 区间的半宽（百分点）")
+    ax.set_title("题量翻 4 倍，误差条才缩一半", fontsize=13)
+    ax.grid(alpha=0.25); ax.legend(frameon=False, fontsize=10)
+    save(fig, "ci-width.png")
+
+
+# ---------- 11. 逐 token 平稳变好，整题像是突然学会 ----------
+def emergence():
+    ps = [0.5 + i / 400 for i in range(201)]
+    fig, ax = plt.subplots(figsize=(9, 5))
+    ax.plot(ps, ps, color=GREY, ls="--", lw=1.6, label="每个 token 写对的概率 p")
+    ax.plot(ps, [p ** 10 for p in ps], color=BLUE, lw=2.4, label="10 个 token 全对的概率 p¹⁰")
+    for p in (0.8, 0.9, 0.95, 0.99):
+        ax.plot([p], [p ** 10], "o", color=ORANGE, ms=7)
+        ax.annotate(f"{p ** 10:.3f}", (p, p ** 10), xytext=(-38, 6), textcoords="offset points", fontsize=10.5)
+    ax.set_xlabel("每个 token 写对的概率 p"); ax.set_ylabel("正确率")
+    ax.set_xlim(0.5, 1.0); ax.set_ylim(0, 1.02)
+    ax.set_title("p 平稳上升，精确匹配却像突然学会", fontsize=13)
+    ax.grid(alpha=0.25); ax.legend(frameon=False, fontsize=10, loc="upper left")
+    save(fig, "emergence.png")
+
+
+# ---------- 12. AA 智能指数的组件权重 ----------
+def aa_weights():
+    groups = [
+        ("Agents 30%", GREEN, [("AA-Briefcase", 15), ("GDPval-AA", 10), ("AutomationBench-AA", 5)]),
+        ("编程 20%", BLUE, [("Terminal-Bench 4.0", 10), ("SciCode", 10)]),
+        ("通用 30%", ORANGE, [("AA-Omniscience 准确率", 10), ("AA-Omniscience 1 − 幻觉率", 5), ("GDP.pdf", 10), ("AA-LCR", 5)]),
+        ("科学推理 20%", PURPLE, [("HLE", 10), ("CritPt", 10)]),
+    ]
+    rows = [(g, col, n, w) for g, col, comps in groups for n, w in comps]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ys = list(range(len(rows)))[::-1]
+    ax.barh(ys, [w for *_, w in rows], color=[col for _, col, _, _ in rows], height=0.65)
+    for y, (g, col, n, w) in zip(ys, rows):
+        ax.text(w + 0.3, y, f"{w}%", va="center", fontsize=11)
+    ax.set_yticks(ys); ax.set_yticklabels([n for _, _, n, _ in rows], fontsize=11)
+    i = 0
+    for g, col, comps in groups:
+        top, bot = ys[i], ys[i + len(comps) - 1]
+        ax.text(18.5, (top + bot) / 2, g, va="center", ha="left", fontsize=12, weight="bold", color=col)
+        ax.plot([18, 18], [bot - 0.35, top + 0.35], color=col, lw=3)
+        i += len(comps)
+    ax.set_xlim(0, 24); ax.set_xticks([])
+    [ax.spines[k].set_visible(False) for k in ("top", "right", "bottom")]
+    ax.set_title("AA 智能指数：11 项加权，权重偏向 agent 任务", fontsize=13)
+    fig.text(0.5, 0.0, "Briefcase 和 GDPval-AA 是 Elo，先用 clamp((Elo − 500)/2000) 压到 0 到 1", ha="center", fontsize=10, color=GREY)
+    save(fig, "aa-weights.png")
 
 
 if __name__ == "__main__":
     overview(); years(); pipeline(); class1(); sampling(); elo_order(); new_model(); three_champions(); judge_merge()
+    metr_fit(); ci_width(); emergence(); aa_weights()

@@ -4,7 +4,7 @@
 
 ![四大类、各小类和各自的 bench 数量与占比](images/overview.png)
 
-第一类占了八成多，在第 1 章里分八个小类，每个小类一节；第二类按对手和裁判分成五种。图里每一格的数字都来自 [data/benchmarks.csv](data/benchmarks.csv) 的「属于哪一类」和「小类」两列。
+第一类占了八成多，在第 1 章里分八个小类，每个小类一节；第二类按对手和裁判分成五种。图里每一格的数字都来自 [data/benchmarks.csv](data/benchmarks.csv) 的"属于哪一类"和"小类"两列。
 
 ## 目录
 
@@ -14,10 +14,10 @@
 | [第 1 章](book/chapter1.md) | 单独给一个模型打分 | 程序对答案、跑起来再判、模型判答案对不对、按细则逐条判、概率式评分、换算成人类的量、没有满分的开放量、被评的是判官 |
 | [第 2 章](book/chapter2.md) | 合并：从一条判定到一个总分 | 一道题里的多条检查、多个判官、同一道题跑多次、整套题合成一个分；合并的维度和顺序都会改变结果 |
 | [第 3 章](book/chapter3.md) | 对照参考产出与相对比较 | 固定参考和流动的对手池，从 Elo 到 Bradley–Terry，平局、裁判噪声、长度偏好和配对，新模型一来老分就变 |
-| [第 4 章](book/chapter4.md) | 真实使用数据 | 从真实会话里估计换一个模型的提升 |
-| [第 5 章](book/chapter5.md) | 跨 bench 合成指数 | 加权和、项目反应理论、按名次合并和不合并 |
+| [第 4 章](book/chapter4.md) | 真实使用数据 | Agent Arena 的逆倾向加权、OpenRouter 用量、Alignment Index |
+| [第 5 章](book/chapter5.md) | 跨 bench 合成指数 | 加权和、项目反应理论、统一成两两对局、按名次合并和不合并 |
 | [第 6 章](book/chapter6.md) | 一个分数能信多少 | 跑法和用户模拟器、谁决定送什么进来、误差条、分数怎么过期 |
-| [第 7 章](book/chapter7.md) | 读懂几个主流榜单 | Artificial Analysis、LMArena、Vals、SEAL、METR、Epoch 等榜单的头条数字各自怎么来 |
+| [第 7 章](book/chapter7.md) | 读懂几个主流榜单 | Artificial Analysis、LMArena、Vals、SEAL、METR、Epoch 等榜单，每个一张卡片：头条数字、怎么判、怎么合、会不会随别的模型变 |
 | [附录](book/appendix.md) | 书中涉及的 bench | 这些 bench 的来路；227 个 bench 按大类和小类分组：怎么判、怎么合成总分 |
 
 ## 数据和脚本
